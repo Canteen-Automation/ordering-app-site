@@ -1,0 +1,142 @@
+:root {
+  --primary: #231651;
+  --primary-light: #f0f1ff;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --border: rgba(35, 22, 81, 0.1);
+  --green: #00B894;
+  --green-light: #E6FFFA;
+  --red: #ff4d4f;
+  --text-dark: #231651;
+  --text-mid: #4a3e7a;
+  --text-light: #7b71af;
+  --star: #f4c640;
+  --shadow: 0 4px 20px rgba(35, 22, 81, 0.05);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-dark);
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--surface);
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.safe-area-bottom {
+  padding-bottom: 100px; /* Increased for fixed footers */
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+.loading-spinner {
+  padding: 20px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Global QR Overlay Styles */
+.qr-container {
+  position: relative;
+  display: inline-block;
+}
+
+.qr-wrapper-inner {
+  position: relative;
+  display: inline-block;
+}
+
+.qr-completed canvas,
+.qr-expired canvas {
+  filter: blur(8px) !important;
+  opacity: 0.6 !important;
+}
+
+.qr-expired canvas {
+  filter: blur(12px) grayscale(100%) !important;
+}
+
+.qr-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50 !important;
+  pointer-events: none;
+}
+
+.overlay-text {
+  background: #ef4444;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  transform: rotate(-15deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border: 2px solid white;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.overlay-text.expired {
+  background: #374151 !important;
+}
+
+.overlay-text.mini {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+}
+
+.latest-qr-wrapper.qr-completed canvas,
+.latest-qr-wrapper.qr-expired canvas {
+  filter: blur(4px) !important;
+}
+
+.latest-qr-wrapper.qr-expired canvas {
+  filter: blur(6px) grayscale(100%) !important;
+}
