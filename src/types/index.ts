@@ -44,3 +44,19 @@ export interface Stall {
   temporarilyClosed: boolean;
   products?: FoodItem[];
 }
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  displayOrderId: string;
+  totalAmount: number;
+  status: string;
+  paymentMethod: string;
+  createdAt: string;
+  archived: boolean;
+  items: Array<{
+    productName: string;
+    quantity: number;
+    price: number;
+  }>;
+}

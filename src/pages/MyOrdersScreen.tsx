@@ -4,70 +4,33 @@ import { QRCodeCanvas } from 'qrcode.react';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import { useAuth } from '../contexts/AuthContext';
+import { useOrders } from '../contexts/OrdersContext';
+import type { Order } from '../types';
 import './MyOrdersScreen.css';
 import { db } from '../firebase';
-import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 
-interface Order {
-  id: string;
-  orderNumber: string;
-  displayOrderId: string;
-  totalAmount: number;
-  status: string;
-  paymentMethod: string;
-  createdAt: string;
-  archived: boolean;
-  items: Array<{
-    productName: string;
-    quantity: number;
-    price: number;
-  }>;
-}
+
 
 const MyOrdersScreen: React.FC = () => {
   const { user } = useAuth();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { orders, isLoading: contextLoading } = useOrders();
+  const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchOrders();
-    }
-  }, [user]);
 
-  const fetchOrders = async () => {
-    if (!user?.id) return;
-    try {
-      const q = query(
-        collection(db, 'orders'),
-        where('userId', '==', user.id),
-        orderBy('createdAt', 'desc')
-      );
-      
-      const querySnapshot = await getDocs(q);
-      const items: Order[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        items.push({
-          id: doc.id,
-          ...data,
-          createdAt: data.createdAt?.toDate()?.toISOString() || new Date().toISOString()
-        } as Order);
-      });
-      setOrders(items);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const latestOrder = orders.length > 0 ? orders[0] : null;
   const previousOrders = orders.length > 1 ? orders.slice(1) : [];
 
-  if (loading) {
-    return <div className="container">Loading your orders...</div>;
+  if (contextLoading || loading) {
+    return <div className="container loading-container">
+      <div className="mesh-gradient-bg"></div>
+      <div className="loading-content">
+        <div className="loading-dots"><span>.</span><span>.</span><span>.</span></div>
+        <p>Loading your orders...</p>
+      </div>
+    </div>;
   }
 
   return (

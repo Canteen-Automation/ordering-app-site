@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle, Home, ShoppingBag } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -12,6 +12,22 @@ const SuccessScreen: React.FC = () => {
   const displayOrderId = state.displayOrderId || '000';
   const archived = state.archived || false;
   const status = (state.status || 'PAID').toUpperCase();
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate('/orders');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [navigate]);
 
   return (
     <div className="container success-page">
@@ -50,6 +66,9 @@ const SuccessScreen: React.FC = () => {
                 ? 'Order has been fulfilled'
                 : 'Scan this QR at the counter to collect your food'}
           </p>
+          <div className="redirect-notice">
+            Redirecting to My Orders in {countdown}s...
+          </div>
         </div>
         
         <div className="success-actions">

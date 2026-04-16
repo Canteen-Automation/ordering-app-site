@@ -46,6 +46,7 @@ const CheckoutScreen: React.FC = () => {
         orderNumber: orderNumber,
         displayOrderId: displayOrderId,
         createdAt: serverTimestamp(),
+        archived: false,
         items: cart.map(item => ({
           productId: item.id.toString(),
           productName: item.name,
