@@ -1,0 +1,161 @@
+.change-pin-page {
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+
+.change-pin-content {
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.change-pin-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border-radius: 28px;
+  padding: 32px 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.step-indicator {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.step-title {
+  font-size: 22px;
+  font-weight: 850;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.pin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mid);
+  margin-left: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-light);
+}
+
+.pin-form input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border-radius: 16px;
+  border: 2px solid #f0f2f5;
+  background-color: #f0f2f5;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  outline: none;
+  transition: all 0.3s ease;
+  letter-spacing: 4px;
+}
+
+.pin-form input:focus {
+  background-color: #ffffff;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(35, 22, 81, 0.05);
+}
+
+.primary-button {
+  width: 100%;
+  padding: 16px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 8px;
+  box-shadow: 0 8px 20px rgba(35, 22, 81, 0.2);
+  transition: all 0.2s ease;
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.primary-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.success-check {
+  color: var(--green);
+  margin-bottom: 24px;
+  animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.error-message {
+  padding: 12px;
+  background-color: #fff1f2;
+  color: #ff4d4f;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 77, 79, 0.1);
+  text-align: center;
+}

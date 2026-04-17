@@ -1,0 +1,186 @@
+.checkout-page {
+  background-color: var(--bg);
+}
+
+.checkout-section {
+  background-color: var(--surface);
+  margin-bottom: 10px;
+  padding-bottom: 16px;
+}
+
+.address-options, .payment-options {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.address-card, .payment-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  min-width: 0;
+}
+
+.address-card.selected, .payment-card.selected {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.address-icon, .payment-icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--bg);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-mid);
+  flex-shrink: 0;
+}
+
+.address-card.selected .address-icon, .payment-card.selected .payment-icon {
+  background-color: white;
+  color: var(--primary);
+}
+
+.address-info, .payment-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.address-type, .payment-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.address-text, .payment-sub {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  line-height: 1.4;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selection-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.address-card.selected .selection-radio, .payment-card.selected .selection-radio {
+  border-color: var(--primary);
+}
+
+.radio-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.address-card.selected .radio-inner, .payment-card.selected .radio-inner {
+  background-color: var(--primary);
+}
+
+.add-address {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--primary);
+  border-radius: 12px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.upi-placeholder {
+  font-weight: 800;
+  font-size: 0.7rem;
+}
+
+.order-summary-mini {
+  background-color: var(--surface);
+  padding: 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  margin-top: 4px;
+}
+
+.upi-app-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.tax-info {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  margin-top: 8px;
+  text-align: right;
+}
+
+.summary-price {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.checkout-footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  background-color: var(--surface);
+  padding: 16px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  border-top: 1px solid var(--border);
+  z-index: 101;
+}
+
+.place-order-button {
+  width: 100%;
+  background-color: var(--primary);
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+@media (max-width: 360px) {
+  .address-card, .payment-card {
+    padding: 10px;
+    gap: 10px;
+  }
+}
