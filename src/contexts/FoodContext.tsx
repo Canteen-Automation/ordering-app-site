@@ -48,6 +48,7 @@ export const FoodProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Map BaseItems to Categories
       const mappedCategories: Category[] = baseItemsData.map((item: any, index: number) => ({
         id: item.id.toString(),
+        name: item.name,
         description: item.description,
         emoji: EMOJIS[index % EMOJIS.length],
         image: item.imageData?.trim() ? (item.imageData.trim().startsWith('data:') ? item.imageData.trim() : `data:image/png;base64,${item.imageData.trim()}`) : '', 

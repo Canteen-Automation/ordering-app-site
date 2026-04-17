@@ -1,12 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, RefreshCcw, X } from 'lucide-react';
+import { Search, RefreshCcw, X, Star, ChevronRight } from 'lucide-react';
 import Header from '../components/Header';
 import ItemCard from '../components/ItemCard';
 import CartTab from '../components/CartTab';
 import BottomNav from '../components/BottomNav';
+import FeedbackModal from '../components/FeedbackModal';
 import { useFood } from '../contexts/FoodContext';
 import { useAuth } from '../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 import './HomeScreen.css';
 
 const HomeScreen: React.FC = () => {
@@ -14,6 +16,74 @@ const HomeScreen: React.FC = () => {
   const { categories, stalls, foodItems, isLoading, error, refreshData } = useFood();
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Feedback state
+  const [unratedOrder, setUnratedOrder] = useState<any>(null);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [showFeedbackSnackbar, setShowFeedbackSnackbar] = useState(false);
+
+  useEffect(() => {
+    if (user?.id) {
+      checkForUnratedOrder();
+    }
+  }, [user]);
+
+  const checkForUnratedOrder = async () => {
+    // Don't show if already dismissed in this session
+    if (sessionStorage.getItem('feedback_dismissed')) return;
+
+    try {
+      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`);
+      if (response.status === 200) {
+        const order = await response.json();
+        console.log('Unrated order found:', order);
+        setUnratedOrder(order);
+        setShowFeedbackSnackbar(true);
+      } else {
+        console.log('No unrated orders or error status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error checking for unrated orders:', error);
+    }
+  };
+
+  const handleSkipFeedback = async () => {
+    if (!unratedOrder) return;
+    
+    try {
+      await fetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
+        method: 'POST'
+      });
+      setShowFeedbackModal(false);
+      setShowFeedbackSnackbar(false);
+      setUnratedOrder(null);
+      sessionStorage.setItem('feedback_dismissed', 'true');
+    } catch (error) {
+      console.error('Error skipping feedback:', error);
+      // Fallback: still hide it locally
+      setShowFeedbackModal(false);
+      setShowFeedbackSnackbar(false);
+    }
+  };
+
+  const handleFeedbackSubmit = async (feedbackData: any) => {
+    try {
+      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedbackData)
+      });
+      
+      if (response.ok) {
+        setShowFeedbackModal(false);
+        setShowFeedbackSnackbar(false);
+        setUnratedOrder(null);
+        sessionStorage.setItem('feedback_dismissed', 'true'); // Don't show for others in this session
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const popularItems = useMemo(() => foodItems.filter(item => item.isPopular), [foodItems]);
 
@@ -179,6 +249,43 @@ const HomeScreen: React.FC = () => {
       </main>
       <CartTab />
       <BottomNav />
+
+      <AnimatePresence>
+        {showFeedbackSnackbar && unratedOrder && !showFeedbackModal && (
+          <motion.div 
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="feedback-snackbar"
+            onClick={() => setShowFeedbackModal(true)}
+          >
+            <div className="feedback-snackbar-content">
+              <div className="feedback-snackbar-icon">
+                <Star size={20} fill="currentColor" />
+              </div>
+              <div className="feedback-snackbar-text">
+                <h4>Rate your last meal</h4>
+                <p>Order #{unratedOrder.displayOrderId || unratedOrder.id}</p>
+              </div>
+            </div>
+            <div className="feedback-snackbar-action">
+              <ChevronRight size={20} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showFeedbackModal && unratedOrder && (
+          <FeedbackModal 
+            order={unratedOrder}
+            userId={user?.id || 0}
+            userName={user?.name || 'User'}
+            onClose={handleSkipFeedback}
+            onSubmit={handleFeedbackSubmit}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

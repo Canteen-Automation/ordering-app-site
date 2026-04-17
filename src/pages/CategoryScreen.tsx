@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import ItemCard from '../components/ItemCard';
 import CartTab from '../components/CartTab';
+import BottomNav from '../components/BottomNav';
 import { useFood } from '../contexts/FoodContext';
 
 const CategoryScreen: React.FC = () => {
@@ -39,6 +40,7 @@ const CategoryScreen: React.FC = () => {
         </div>
       </main>
       <CartTab />
+      <BottomNav />
     </div>
   );
 };
