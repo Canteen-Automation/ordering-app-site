@@ -14,6 +14,7 @@ import LoginScreen from './pages/LoginScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import ChangePinScreen from './pages/ChangePinScreen';
 import StallDetailScreen from './pages/StallDetailScreen';
+import StockAlert from './components/StockAlert';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <AuthProvider>
       <FoodProvider>
         <CartProvider>
+          <StockAlert />
           <Router>
             <Routes>
               <Route path="/login" element={<LoginScreen />} />

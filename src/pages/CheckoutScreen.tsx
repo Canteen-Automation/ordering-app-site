@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Smartphone } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
+import StockConflictModal from '../components/StockConflictModal';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useFood } from '../contexts/FoodContext';
@@ -17,11 +19,15 @@ const UPI_APPS = [
 
 const CheckoutScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { cart, totalPrice, clearCart } = useCart();
+  const { cart, totalPrice, clearCart, removeFromCart, updateQuantity } = useCart();
   const { user } = useAuth();
   const { refreshData } = useFood();
   const [selectedApp, setSelectedApp] = useState('gpay');
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Conflict state
+  const [stockConflicts, setStockConflicts] = useState<any[]>([]);
+  const [showConflictModal, setShowConflictModal] = useState(false);
 
   const handlePlaceOrder = async () => {
     if (!user) return;
@@ -41,10 +47,6 @@ const CheckoutScreen: React.FC = () => {
         stallName: item.stallName || null
       }))
     };
-    
-    console.warn('❗ DIAGNOSTIC: PRE-ORDER PAYLOAD CHECK');
-    console.table(orderData.items.map(i => ({ Name: i.productName, StallID: i.stallId, StallName: i.stallName })));
-    console.log('Full Payload:', JSON.stringify(orderData, null, 2));
 
     try {
       const response = await fetch(`http://${window.location.hostname}:8080/api/orders`, {
@@ -53,26 +55,23 @@ const CheckoutScreen: React.FC = () => {
         body: JSON.stringify(orderData),
       });
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        const data = await response.json();
-        if (data.success) {
-          await refreshData();
-          clearCart();
-          navigate('/success', { 
-            state: { 
-              orderNumber: data.orderNumber, 
-              displayOrderId: data.displayOrderId 
-            } 
-          });
-        } else {
-          console.error('Order Logic Error:', data.message || data);
-          alert(data.message || 'Failed to place order');
-        }
+      const data = await response.json();
+      if (data.success) {
+        await refreshData();
+        clearCart();
+        navigate('/success', { 
+          state: { 
+            orderNumber: data.orderNumber, 
+            displayOrderId: data.displayOrderId 
+          } 
+        });
+      } else if (data.errorType === 'STOCK_ERROR') {
+        console.error('Final Step Stock Conflict:', data.conflicts);
+        setStockConflicts(data.conflicts || []);
+        setShowConflictModal(true);
+        await refreshData(true); // Sync background stock
       } else {
-        const text = await response.text();
-        console.error('Order Server Error (Non-JSON):', text);
-        alert('Server Error. Check console for details.');
+        alert(data.message || 'Failed to place order');
       }
     } catch (error) {
       console.error('Order error:', error);
@@ -80,6 +79,24 @@ const CheckoutScreen: React.FC = () => {
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleRemoveConflictItem = (productId: number) => {
+    removeFromCart(productId.toString());
+    const remaining = stockConflicts.filter(c => c.productId !== productId);
+    setStockConflicts(remaining);
+    if (remaining.length === 0) setShowConflictModal(false);
+  };
+
+  const handleAdjustConflictQuantity = (productId: number, newQty: number) => {
+    const item = cart.find(i => i.id === productId.toString());
+    if (item) {
+      const delta = newQty - item.quantity;
+      updateQuantity(productId.toString(), delta);
+    }
+    const remaining = stockConflicts.filter(c => c.productId !== productId);
+    setStockConflicts(remaining);
+    if (remaining.length === 0) setShowConflictModal(false);
   };
 
   return (
@@ -141,6 +158,17 @@ const CheckoutScreen: React.FC = () => {
           {isProcessing ? 'Processing...' : `Pay ₹${totalPrice.toFixed(2)} & Place Order`}
         </button>
       </div>
+
+      <AnimatePresence>
+        {showConflictModal && (
+          <StockConflictModal 
+            conflicts={stockConflicts}
+            onRemoveItem={handleRemoveConflictItem}
+            onAdjustQuantity={handleAdjustConflictQuantity}
+            onClose={() => navigate('/cart')}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

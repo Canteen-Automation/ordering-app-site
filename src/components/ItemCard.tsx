@@ -13,10 +13,11 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, isLast }) => {
   const navigate = useNavigate();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const quantity = getItemQuantity(item.id);
+  const isLimitReached = item.stock !== undefined && quantity >= item.stock && item.stock > 0;
 
   return (
     <div 
-      className={`item-card ${isLast ? 'last' : ''} ${item.stock === 0 ? 'out-of-stock' : ''}`} 
+      className={`item-card ${isLast ? 'last' : ''} ${item.stock === 0 ? 'out-of-stock' : ''} ${isLimitReached ? 'limit-reached' : ''}`} 
       onClick={() => navigate(`/item/${item.id}`)}
     >
       <div className="item-info">
@@ -26,6 +27,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, isLast }) => {
           </div>
           {item.isPopular && <span className="bestseller-badge">Popular</span>}
           {item.stock === 0 && <span className="out-of-stock-badge">Out of Stock</span>}
+          {isLimitReached && <span className="limit-badge">Only {item.stock} left</span>}
         </div>
         
         <h3 className="item-name">{item.name}</h3>
@@ -53,10 +55,13 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, isLast }) => {
               {item.stock === 0 ? 'SOLD OUT' : 'ADD'}
             </button>
           ) : (
-            <div className="quantity-controls">
+            <div className={`quantity-controls ${isLimitReached ? 'at-limit' : ''}`}>
               <button onClick={() => updateQuantity(item.id, -1)}>−</button>
               <span className="quantity">{quantity}</span>
-              <button onClick={() => addToCart(item)}>+</button>
+              <button 
+                onClick={() => addToCart(item)}
+                className={isLimitReached ? 'disabled' : ''}
+              >+</button>
             </div>
           )}
         </div>

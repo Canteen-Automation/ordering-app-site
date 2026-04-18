@@ -259,3 +259,22 @@
     font-size: 0.9rem;
   }
 }
+
+.limit-reached-info {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.footer-quantity-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

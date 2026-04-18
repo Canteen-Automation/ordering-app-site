@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { AlertCircle } from 'lucide-react';
 import Header from '../components/Header';
 import { useCart } from '../contexts/CartContext';
 import { useFood } from '../contexts/FoodContext';
@@ -13,6 +14,7 @@ const ItemDetailScreen: React.FC = () => {
   
   const item = foodItems.find((i) => i.id === itemId);
   const quantity = item ? getItemQuantity(item.id) : 0;
+  const isLimitReached = item && item.stock !== undefined && quantity >= item.stock && item.stock > 0;
 
   if (isLoading && foodItems.length === 0) {
     return <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
@@ -69,10 +71,17 @@ const ItemDetailScreen: React.FC = () => {
             <div className="info-row">
               <span className="info-label">Availability</span>
               <span className={`info-value ${item.stock && item.stock > 0 ? 'green' : 'red'}`}>
-                {item.stock && item.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                {item.stock && item.stock > 0 ? `In Stock (${item.stock} left)` : 'Out of Stock'}
               </span>
             </div>
           </div>
+
+          {isLimitReached && (
+            <div className="limit-reached-info">
+              <AlertCircle size={18} />
+              <span>You have reached the maximum available quantity ({item.stock}) for this item.</span>
+            </div>
+          )}
         </div>
       </main>
 
@@ -98,7 +107,7 @@ const ItemDetailScreen: React.FC = () => {
               <span className="quantity">{quantity}</span>
               <button 
                 onClick={() => addToCart(item)}
-                disabled={item.stock !== undefined && quantity >= item.stock}
+                disabled={isLimitReached}
               >+</button>
             </div>
           )}

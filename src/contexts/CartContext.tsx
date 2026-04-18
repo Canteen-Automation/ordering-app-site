@@ -10,6 +10,8 @@ interface CartContextType {
   getItemQuantity: (itemId: string) => number;
   totalItems: number;
   totalPrice: number;
+  stockError: string | null;
+  clearStockError: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -19,14 +21,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [stockError, setStockError] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  const clearStockError = () => setStockError(null);
+
   const addToCart = (item: FoodItem) => {
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex((i) => i.id === item.id);
+      
+      // Stock check
+      const currentQty = existingIndex !== -1 ? prevCart[existingIndex].quantity : 0;
+      if (item.stock !== undefined && currentQty >= item.stock) {
+        setStockError(`Only ${item.stock} left for ${item.name}`);
+        return prevCart;
+      }
+
       if (existingIndex !== -1) {
         const newCart = [...prevCart];
         newCart[existingIndex] = {
@@ -47,9 +60,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart((prevCart) => {
       const index = prevCart.findIndex((item) => item.id === itemId);
       if (index !== -1) {
-        const newCart = [...prevCart];
-        const newQty = newCart[index].quantity + delta;
+        const item = prevCart[index];
+        const newQty = item.quantity + delta;
+
+        // Stock check for increment
+        if (delta > 0 && item.stock !== undefined && item.quantity >= item.stock) {
+          setStockError(`Only ${item.stock} left for ${item.name}`);
+          return prevCart;
+        }
+
         if (newQty > 0) {
+          const newCart = [...prevCart];
           newCart[index] = { ...newCart[index], quantity: newQty };
           return newCart;
         } else {
@@ -84,6 +105,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         getItemQuantity,
         totalItems,
         totalPrice,
+        stockError,
+        clearStockError,
       }}
     >
       {children}

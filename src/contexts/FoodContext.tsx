@@ -24,8 +24,8 @@ export const FoodProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
-    setIsLoading(true);
+  const fetchData = async (silent = false) => {
+    if (!silent) setIsLoading(true);
     setError(null);
     try {
       const [baseItemsRes, productsRes, stallsRes] = await Promise.all([
@@ -119,15 +119,22 @@ export const FoodProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setFoodItems(mappedFoodItems);
       setStalls(mappedStalls);
     } catch (err: any) {
-      setError(err.message);
+      if (!silent) setError(err.message);
       console.error('Error fetching food data:', err);
     } finally {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
+
+    // Silent background polling every 10 seconds to sync stock
+    const pollInterval = setInterval(() => {
+      fetchData(true);
+    }, 10000);
+
+    return () => clearInterval(pollInterval);
   }, []);
 
   return (

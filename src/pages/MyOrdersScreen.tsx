@@ -65,21 +65,21 @@ const MyOrdersScreen: React.FC = () => {
     const available: FoodItem[] = [];
 
     order.items.forEach(orderItem => {
-      // Find the current food item by name (since orders store names)
-      // Robustness: matching by name is fallback if IDs aren't directly available in OrderItem DTO
       const currentItem = foodItems.find(fi => fi.name === orderItem.productName);
       
-      if (currentItem) {
-        if (currentItem.stock && currentItem.stock > 0) {
-          // Add multiple times based on original quantity
-          for (let i = 0; i < orderItem.quantity; i++) {
-            available.push(currentItem);
-          }
-        } else {
-          missing.push(orderItem.productName);
+      if (currentItem && currentItem.stock !== undefined && currentItem.stock > 0) {
+        // Only add up to available stock
+        const canAdd = Math.min(orderItem.quantity, currentItem.stock);
+        
+        for (let i = 0; i < canAdd; i++) {
+          available.push(currentItem);
+        }
+
+        if (canAdd < orderItem.quantity) {
+          missing.push(`${orderItem.productName} (only ${canAdd} of ${orderItem.quantity} available)`);
         }
       } else {
-        missing.push(orderItem.productName); // Item no longer exists in catalog
+        missing.push(orderItem.productName); // Item no longer exists or out of stock
       }
     });
 
