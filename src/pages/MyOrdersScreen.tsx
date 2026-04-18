@@ -19,7 +19,7 @@ interface Order {
   status: string;
   paymentMethod: string;
   createdAt: string;
-  archived: boolean;
+  isArchived: boolean;
   items: Array<{
     productName: string;
     quantity: number;
@@ -41,6 +41,13 @@ const MyOrdersScreen: React.FC = () => {
   const [showStockAlert, setShowStockAlert] = useState(false);
   const [unavailableItems, setUnavailableItems] = useState<string[]>([]);
   const [pendingItems, setPendingItems] = useState<FoodItem[]>([]);
+
+  const isOrderExpired = (order: Order) => {
+    if (order.isArchived) return true;
+    const orderDate = new Date(order.createdAt).toDateString();
+    const today = new Date().toDateString();
+    return orderDate !== today;
+  };
 
   useEffect(() => {
     if (user?.id) {
@@ -137,7 +144,7 @@ const MyOrdersScreen: React.FC = () => {
                     <div className="order-status-badge">{latestOrder.status}</div>
                   </div>
                   
-                  <div className={`latest-qr-wrapper ${latestOrder.status.toUpperCase() === 'COMPLETED' ? 'qr-completed' : ''} ${latestOrder.archived ? 'qr-expired' : ''}`}>
+                  <div className={`latest-qr-wrapper ${latestOrder.status.toUpperCase() === 'COMPLETED' ? 'qr-completed' : ''} ${isOrderExpired(latestOrder) ? 'qr-expired' : ''}`}>
                     <div className="qr-container">
                       <QRCodeCanvas value={latestOrder.orderNumber} size={120} className="mini-qr" />
                       {latestOrder.status.toUpperCase() === 'COMPLETED' && (
@@ -145,14 +152,14 @@ const MyOrdersScreen: React.FC = () => {
                           <span className="overlay-text mini">COMPLETED</span>
                         </div>
                       )}
-                      {latestOrder.archived && (
+                      {isOrderExpired(latestOrder) && (
                         <div className="qr-overlay mini">
                           <span className="overlay-text mini expired">EXPIRED</span>
                         </div>
                       )}
                     </div>
                     <div className="qr-hint-text">
-                      {latestOrder.status.toUpperCase() === 'COMPLETED' ? 'Order Fulfilled' : 'Tap to enlarge QR'}
+                      {isOrderExpired(latestOrder) ? 'QR Expired' : (latestOrder.status.toUpperCase() === 'COMPLETED' ? 'Order Fulfilled' : 'Tap to enlarge QR')}
                     </div>
                   </div>
                   
@@ -237,7 +244,7 @@ const MyOrdersScreen: React.FC = () => {
                 <p className="modal-order-id">Order #{selectedOrder.displayOrderId}</p>
               </div>
               
-              <div className={`modal-qr-section ${selectedOrder.status.toUpperCase() === 'COMPLETED' ? 'qr-completed' : ''} ${selectedOrder.archived ? 'qr-expired' : ''}`}>
+              <div className={`modal-qr-section ${selectedOrder.status.toUpperCase() === 'COMPLETED' ? 'qr-completed' : ''} ${isOrderExpired(selectedOrder) ? 'qr-expired' : ''}`}>
                 <div className="qr-container">
                   <QRCodeCanvas value={selectedOrder.orderNumber} size={200} includeMargin={true} />
                   {selectedOrder.status.toUpperCase() === 'COMPLETED' && (
@@ -245,15 +252,15 @@ const MyOrdersScreen: React.FC = () => {
                       <span className="overlay-text">COMPLETED</span>
                     </div>
                   )}
-                  {selectedOrder.archived && (
+                  {isOrderExpired(selectedOrder) && (
                     <div className="qr-overlay">
                       <span className="overlay-text expired">EXPIRED</span>
                     </div>
                   )}
                 </div>
                 <p className="modal-qr-hint">
-                  {selectedOrder.archived 
-                    ? 'This order has expired'
+                  {isOrderExpired(selectedOrder) 
+                    ? 'QR Expired'
                     : selectedOrder.status.toUpperCase() === 'COMPLETED' 
                       ? 'This order has been fulfilled' 
                       : 'Show this QR code at the counter'}
