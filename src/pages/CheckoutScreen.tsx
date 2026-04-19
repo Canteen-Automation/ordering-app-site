@@ -4,7 +4,6 @@ import { Smartphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import StockConflictModal from '../components/StockConflictModal';
-import FrisscoSwift from '../components/FrisscoSwift';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useFood } from '../contexts/FoodContext';
@@ -25,42 +24,10 @@ const CheckoutScreen: React.FC = () => {
   const { refreshData } = useFood();
   const [selectedApp, setSelectedApp] = useState('gpay');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<{
-    paymentUrl: string;
-    qrCodeId: string;
-    razorpayOrderId: string;
-    amount: number;
-    key: string;
-    fallbackToCheckout: boolean;
-  } | null>(null);
   
   // Conflict state
   const [stockConflicts, setStockConflicts] = useState<any[]>([]);
   const [showConflictModal, setShowConflictModal] = useState(false);
-
-  const startPolling = (orderId: string) => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch(`http://${window.location.hostname}:8080/api/payments/status/${orderId}`);
-        const data = await response.json();
-        
-        if (data.success && data.status === 'PAID') {
-          clearInterval(interval);
-          await refreshData();
-          clearCart();
-          navigate('/success', { 
-            state: { 
-              orderNumber: data.orderNumber, 
-              displayOrderId: data.displayOrderId 
-            } 
-          });
-        }
-      } catch (error) {
-        console.error('Polling error:', error);
-      }
-    }, 5000);
-    return interval;
-  };
 
   const handlePlaceOrder = async () => {
     if (!user) return;
@@ -69,7 +36,7 @@ const CheckoutScreen: React.FC = () => {
     const orderData = {
       userId: user.id,
       totalAmount: totalPrice,
-      paymentMethod: 'Frissco Swift (UPI)',
+      paymentMethod: UPI_APPS.find(a => a.id === selectedApp)?.name || 'UPI',
       orderType: 'MY_ORDER',
       items: cart.map(item => ({
         productId: Number(item.id),
@@ -82,7 +49,7 @@ const CheckoutScreen: React.FC = () => {
     };
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/payments/initiate`, {
+      const response = await fetch(`http://${window.location.hostname}:8080/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
@@ -90,25 +57,24 @@ const CheckoutScreen: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        setPaymentDetails({
-          paymentUrl: data.paymentUrl,
-          qrCodeId: data.razorpayQrCodeId,
-          razorpayOrderId: data.razorpayOrderId,
-          amount: data.amount,
-          key: data.key,
-          fallbackToCheckout: data.fallbackToCheckout
+        await refreshData();
+        clearCart();
+        navigate('/success', { 
+          state: { 
+            orderNumber: data.orderNumber, 
+            displayOrderId: data.displayOrderId 
+          } 
         });
-        // Use QR ID if available, otherwise Order ID for polling
-        startPolling(data.razorpayQrCodeId || data.razorpayOrderId);
       } else if (data.errorType === 'STOCK_ERROR') {
-        console.error('Stock Conflict:', data.message);
-        alert(data.message);
-        await refreshData(true);
+        console.error('Final Step Stock Conflict:', data.conflicts);
+        setStockConflicts(data.conflicts || []);
+        setShowConflictModal(true);
+        await refreshData(true); // Sync background stock
       } else {
-        alert(data.message || 'Failed to initiate payment');
+        alert(data.message || 'Failed to place order');
       }
     } catch (error) {
-      console.error('Initiation error:', error);
+      console.error('Order error:', error);
       alert('Error connecting to server. Please try again.');
     } finally {
       setIsProcessing(false);
@@ -194,19 +160,6 @@ const CheckoutScreen: React.FC = () => {
       </div>
 
       <AnimatePresence>
-        {paymentDetails && (
-          <div className="payment-overlay">
-            <FrisscoSwift 
-              amount={paymentDetails.amount}
-              paymentUrl={paymentDetails.paymentUrl}
-              fallbackToCheckout={paymentDetails.fallbackToCheckout}
-              razorpayOrderId={paymentDetails.razorpayOrderId}
-              razorpayKey={paymentDetails.key}
-              onClose={() => setPaymentDetails(null)}
-            />
-          </div>
-        )}
-
         {showConflictModal && (
           <StockConflictModal 
             conflicts={stockConflicts}
