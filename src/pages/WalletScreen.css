@@ -1,20 +1,21 @@
 .wallet-page {
-  background: var(--bg-primary);
+  background: var(--bg);
   min-height: 100vh;
 }
 
 .balance-section {
-  padding: 1.5rem;
+  padding: 24px 16px;
 }
 
 .ritz-card {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: linear-gradient(135deg, #231651 0%, #4a3e7a 100%);
   border-radius: 24px;
-  padding: 1.5rem;
+  padding: 24px;
   color: white;
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 15px 35px rgba(35, 22, 81, 0.2);
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ritz-card::before {
@@ -22,56 +23,58 @@
   position: absolute;
   top: -20%;
   right: -10%;
-  width: 200px;
-  height: 200px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 250px;
+  height: 250px;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 50%;
-  filter: blur(40px);
+  filter: blur(50px);
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
 }
 
 .token-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-  opacity: 0.9;
+  gap: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.85;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .token-icon {
-  background: rgba(255, 255, 255, 0.2);
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .refresh-btn {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: white;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
 .refresh-btn:active {
-  transform: scale(0.9);
+  transform: rotate(180deg);
 }
 
 .spinning {
@@ -86,108 +89,110 @@
 .token-balance {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+  gap: 8px;
+  margin-bottom: 28px;
 }
 
 .token-symbol {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 300;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .token-amount {
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   font-weight: 800;
   letter-spacing: -2px;
+  line-height: 1;
 }
 
 .card-actions {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .topup-action-btn {
   background: white;
-  color: #6366f1;
+  color: #231651;
   border: none;
-  padding: 0.8rem 1.5rem;
+  padding: 12px 24px;
   border-radius: 16px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .topup-action-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
 }
 
 .transactions-section {
-  padding: 0 1.5rem 2rem;
+  padding: 0 16px 40px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: 16px;
 }
 
 .section-title {
   font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 800;
+  color: var(--text-dark);
 }
 
 .view-all {
   font-size: 0.85rem;
-  color: #6366f1;
-  font-weight: 600;
+  color: var(--text-mid);
+  font-weight: 700;
 }
 
 .transactions-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 8px;
 }
 
 .transaction-item {
-  background: var(--card-bg);
-  padding: 1rem;
+  background: #f8f9ff;
+  padding: 14px 16px;
   border-radius: 16px;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s ease;
+  gap: 14px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
 }
 
 .transaction-item:active {
+  background: white;
   transform: scale(0.98);
 }
 
 .trans-icon {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .trans-icon.topup {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
+  background: #e6fffa;
+  color: #00b894;
 }
 
 .trans-icon.spend {
-  background: rgba(239, 68, 68, 0.1);
+  background: #fff1f2;
   color: #ef4444;
 }
 
@@ -195,74 +200,81 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 3px;
+  min-width: 0;
 }
 
 .trans-desc {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  color: var(--text-dark);
   font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trans-time {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--text-light);
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 5px;
+  font-weight: 600;
 }
 
 .trans-amount {
   font-size: 1.1rem;
   font-weight: 800;
+  flex-shrink: 0;
 }
 
 .trans-amount.credit {
-  color: #22c55e;
+  color: #00b894;
 }
 
 .trans-amount.debit {
-  color: #ef4444;
+  color: var(--text-dark);
 }
 
 .empty-transactions {
-  padding: 3rem 1rem;
+  padding: 60px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
-  color: var(--text-secondary);
+  gap: 20px;
+  color: var(--text-light);
 }
 
 .empty-icon {
-  width: 80px;
-  height: 80px;
-  background: var(--card-bg);
+  width: 90px;
+  height: 90px;
+  background: var(--primary-light);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 4px dashed var(--border-color);
+  border: 2px dashed var(--primary);
+  color: var(--primary);
 }
 
 .token-perks {
-  padding: 0 1.5rem 1rem;
+  padding: 0 16px 20px;
 }
 
 .perk-card {
-  background: linear-gradient(to right, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05));
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  padding: 1rem;
-  border-radius: 16px;
+  background: var(--primary-light);
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  color: var(--text-primary);
+  gap: 16px;
+  color: var(--text-dark);
 }
 
 .perk-icon {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .perk-info {
@@ -271,30 +283,31 @@
 
 .perk-info h4 {
   font-size: 0.95rem;
-  font-weight: 700;
-  margin-bottom: 0.1rem;
+  font-weight: 800;
+  margin-bottom: 2px;
 }
 
 .perk-info p {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--text-mid);
+  font-weight: 500;
 }
 
 .loading-state {
-  padding: 2rem;
+  padding: 40px;
   display: flex;
   justify-content: center;
 }
 
 .loader-dots {
   display: flex;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .loader-dots span {
-  width: 8px;
-  height: 8px;
-  background: #6366f1;
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
   border-radius: 50%;
   animation: bounce 0.6s infinite alternate;
 }
@@ -303,5 +316,5 @@
 .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes bounce {
-  to { transform: translateY(-10px); opacity: 0.5; }
+  to { transform: translateY(-12px); opacity: 0.5; }
 }

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
+import BottomNav from '../components/BottomNav';
 import { useAuth } from '../contexts/AuthContext';
 import './WalletScreen.css';
 
@@ -169,6 +170,7 @@ const WalletScreen: React.FC = () => {
           </div>
         </section>
       </main>
+      <BottomNav />
     </div>
   );
 };

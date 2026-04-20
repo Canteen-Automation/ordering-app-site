@@ -7,17 +7,20 @@ import {
   Zap,
   Star,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Gem,
+  Crown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import BottomNav from '../components/BottomNav';
 import { useAuth } from '../contexts/AuthContext';
 import './TopUpScreen.css';
 
 const TOKEN_PACKS = [
-  { amount: 100, label: 'Starter Pack', icon: <Zap size={16} /> },
-  { amount: 500, label: 'Standard Pack', icon: <Star size={16} />, popular: true },
-  { amount: 1000, label: 'Premium Pack', icon: <ShieldCheck size={16} /> },
-  { amount: 2000, label: 'Ritz Master', icon: <CircleDollarSign size={16} /> }
+  { amount: 100, label: 'Starter', icon: <Zap size={20} /> },
+  { amount: 500, label: 'Value', icon: <Star size={20} />, popular: true },
+  { amount: 1000, label: 'Premium', icon: <Gem size={20} /> },
+  { amount: 2000, label: 'Ultimate', icon: <Crown size={20} /> }
 ];
 
 const TopUpScreen: React.FC = () => {
@@ -72,7 +75,7 @@ const TopUpScreen: React.FC = () => {
       if (data.success) {
         setShowSuccess(true);
         setTimeout(() => {
-          navigate('/wallet');
+          navigate('/wallet', { replace: true });
         }, 2000);
       } else {
         setError(data.error || 'Failed to add tokens');
@@ -88,7 +91,7 @@ const TopUpScreen: React.FC = () => {
   return (
     <div className="container topup-page">
       <header className="topup-header">
-        <button className="back-btn" onClick={() => navigate('/wallet')}>
+        <button className="back-btn" onClick={() => navigate(-1)}>
           <ChevronLeft size={24} />
         </button>
         <h1 className="header-title">Add Ritz Tokens</h1>
@@ -179,6 +182,7 @@ const TopUpScreen: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <BottomNav />
     </div>
   );
 };

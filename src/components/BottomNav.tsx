@@ -14,7 +14,7 @@ const BottomNav: React.FC = () => {
   ];
 
   // Only show on main screens and stall details
-  const isMainScreen = ['/', '/orders', '/profile'].includes(location.pathname);
+  const isMainScreen = ['/', '/orders', '/profile', '/wallet', '/topup'].includes(location.pathname);
   const isStallDetail = location.pathname.startsWith('/stall/');
   
   if (!isMainScreen && !isStallDetail) {
