@@ -1,0 +1,244 @@
+.topup-page {
+  background: var(--bg-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topup-header {
+  padding: 1.2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+.topup-container {
+  padding: 1.5rem;
+}
+
+.input-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.input-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.currency-symbol {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+.amount-input {
+  border: none;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #6366f1;
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+  letter-spacing: -2px;
+}
+
+.input-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.packs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pack-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  padding: 1.2rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.pack-card.selected {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.05);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.1);
+}
+
+.pack-card.popular {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -10px;
+  background: #a855f7;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.pack-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6366f1;
+}
+
+.pack-amount {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.pack-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.security-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.topup-footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  background: white;
+  border-top: 1px solid var(--border-color);
+}
+
+.confirm-btn {
+  background: #6366f1;
+  color: white;
+  width: 100%;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 18px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:disabled {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.success-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success-icon-wrapper {
+  width: 100px;
+  height: 100px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+  color: white;
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+}
+
+.success-content h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.success-content p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}

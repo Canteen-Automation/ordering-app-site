@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Smartphone } from 'lucide-react';
+import { 
+  CircleDollarSign, 
+  Wallet, 
+  ChevronRight, 
+  AlertCircle,
+  ShieldCheck,
+  PlusCircle
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import StockConflictModal from '../components/StockConflictModal';
@@ -9,34 +16,52 @@ import { useAuth } from '../contexts/AuthContext';
 import { useFood } from '../contexts/FoodContext';
 import './CheckoutScreen.css';
 
-const UPI_APPS = [
-  { id: 'gpay', name: 'Google Pay', icon: 'https://cdn.iconscout.com/icon/free/png-256/free-google-pay-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-3-pack-logos-icons-2944849.png' },
-  { id: 'phonepe', name: 'PhonePe', icon: 'https://cdn.iconscout.com/icon/free/png-256/free-phonepe-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-5-pack-logos-icons-2945037.png' },
-  { id: 'paytm', name: 'Paytm', icon: 'https://cdn.iconscout.com/icon/free/png-256/free-paytm-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-5-pack-logos-icons-2945031.png' },
-  { id: 'bhim', name: 'BHIM UPI', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6-6R-pUu-Wj4V_vO8t-qXz9-7vjJ7XvK36A&s' },
-  { id: 'other', name: 'Others', icon: null }
-];
-
 const CheckoutScreen: React.FC = () => {
   const navigate = useNavigate();
   const { cart, totalPrice, clearCart, removeFromCart, updateQuantity } = useCart();
   const { user } = useAuth();
   const { refreshData } = useFood();
-  const [selectedApp, setSelectedApp] = useState('gpay');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentBalance, setCurrentBalance] = useState<number>(user?.ritzTokenBalance || 0);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(true);
   
   // Conflict state
   const [stockConflicts, setStockConflicts] = useState<any[]>([]);
   const [showConflictModal, setShowConflictModal] = useState(false);
 
+  useEffect(() => {
+    fetchBalance();
+  }, [user]);
+
+  const fetchBalance = async () => {
+    if (!user) return;
+    try {
+      setIsLoadingBalance(true);
+      const response = await fetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`);
+      const data = await response.json();
+      setCurrentBalance(data.balance || 0);
+    } catch (error) {
+      console.error('Error fetching balance:', error);
+    } finally {
+      setIsLoadingBalance(false);
+    }
+  };
+
+  const isInsufficient = currentBalance < totalPrice;
+
   const handlePlaceOrder = async () => {
     if (!user) return;
+    if (isInsufficient) {
+      alert('Insufficient Ritz Tokens. Please top up your wallet.');
+      return;
+    }
+    
     setIsProcessing(true);
 
     const orderData = {
       userId: user.id,
       totalAmount: totalPrice,
-      paymentMethod: UPI_APPS.find(a => a.id === selectedApp)?.name || 'UPI',
+      paymentMethod: 'RITZ_TOKEN',
       orderType: 'MY_ORDER',
       items: cart.map(item => ({
         productId: Number(item.id),
@@ -45,7 +70,8 @@ const CheckoutScreen: React.FC = () => {
         quantity: item.quantity,
         stallId: item.stallId ? Number(item.stallId) : null,
         stallName: item.stallName || null
-      }))
+      })),
+      user: { id: user.id } // Backend needs user object for token deduction
     };
 
     try {
@@ -66,10 +92,12 @@ const CheckoutScreen: React.FC = () => {
           } 
         });
       } else if (data.errorType === 'STOCK_ERROR') {
-        console.error('Final Step Stock Conflict:', data.conflicts);
         setStockConflicts(data.conflicts || []);
         setShowConflictModal(true);
-        await refreshData(true); // Sync background stock
+        await refreshData(true);
+      } else if (data.errorType === 'TOKEN_ERROR') {
+        alert(data.message || 'Insufficient Tokens');
+        fetchBalance(); // Sync balance
       } else {
         alert(data.message || 'Failed to place order');
       }
@@ -106,56 +134,89 @@ const CheckoutScreen: React.FC = () => {
       <main className="safe-area-bottom">
         <section className="checkout-section">
           <div className="section-header">
-            <h2 className="section-title">Pay using UPI</h2>
-            <p className="section-subtitle">Select your preferred UPI app</p>
+            <h2 className="section-title">Payment Method</h2>
+            <p className="section-subtitle">Food orders are paid using Ritz Tokens</p>
           </div>
           
           <div className="payment-options">
-            {UPI_APPS.map((app) => (
-              <div 
-                key={app.id}
-                className={`payment-card ${selectedApp === app.id ? 'selected' : ''}`}
-                onClick={() => setSelectedApp(app.id)}
-              >
-                <div className="payment-icon">
-                  {app.icon ? (
-                    <img src={app.icon} alt={app.name} className="upi-app-icon" />
-                  ) : (
-                    <div className="upi-placeholder">
-                      <Smartphone size={20} />
-                    </div>
+            <div className={`payment-card ritz-payment-card ${isInsufficient ? 'insufficient' : 'selected'}`}>
+              <div className="payment-icon ritz-icon">
+                <CircleDollarSign size={24} />
+              </div>
+              <div className="payment-info">
+                <div className="payment-name-row">
+                  <span className="payment-name">Pay with Ritz Tokens</span>
+                  {isInsufficient && (
+                    <span className="status-badge error">Insufficient Balance</span>
                   )}
                 </div>
-                <div className="payment-info">
-                  <span className="payment-name">{app.name}</span>
-                  <span className="payment-sub">
-                    {app.id === 'other' ? 'Pay via any installed UPI app' : `Fast & secure payments via ${app.name}`}
-                  </span>
+                <div className="wallet-balance-info">
+                  <Wallet size={14} />
+                  <span>Current Balance: </span>
+                  <span className="balance-val">R{currentBalance.toLocaleString()}</span>
                 </div>
+              </div>
+              {!isInsufficient && (
                 <div className="selection-radio">
                   <div className="radio-inner" />
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
+
+            {isInsufficient && (
+              <motion.button 
+                className="add-tokens-checkout-btn"
+                onClick={() => navigate('/topup')}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="btn-content">
+                  <PlusCircle size={20} />
+                  <span>Top up Ritz Tokens</span>
+                </div>
+                <ChevronRight size={18} />
+              </motion.button>
+            )}
+          </div>
+
+          <div className="payment-security-note">
+            <ShieldCheck size={14} />
+            <span>Secured by Ritz Token Protocol. 1 Token = R1.00</span>
           </div>
         </section>
 
         <div className="order-summary-mini">
           <div className="summary-row">
-            <span>Amount to pay</span>
-            <span className="summary-price">₹{(totalPrice + 0).toFixed(2)}</span>
+            <span>Tokens to be deducted</span>
+            <span className="summary-price ritz-text">R{totalPrice.toLocaleString()}</span>
           </div>
-          <p className="tax-info">Inclusive of all taxes and charges</p>
+          <p className="tax-info">Exclusive of any platform bonuses</p>
         </div>
+
+        {isInsufficient && (
+          <div className="insufficient-warning">
+            <AlertCircle size={20} />
+            <div className="warning-text">
+              <strong>Short by R{(totalPrice - currentBalance).toLocaleString()}</strong>
+              <p>Add more tokens to complete your order.</p>
+            </div>
+          </div>
+        )}
       </main>
 
       <div className="checkout-footer">
         <button 
-          className="place-order-button"
+          className="place-order-button ritz-order-btn"
           onClick={handlePlaceOrder}
-          disabled={isProcessing}
+          disabled={isProcessing || isInsufficient}
         >
-          {isProcessing ? 'Processing...' : `Pay ₹${totalPrice.toFixed(2)} & Place Order`}
+          {isProcessing ? (
+            <div className="loading-spinner-small" />
+          ) : isInsufficient ? (
+            'Insufficient Tokens'
+          ) : (
+            `Pay R${totalPrice.toLocaleString()} & Place Order`
+          )}
         </button>
       </div>
 

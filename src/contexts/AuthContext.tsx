@@ -122,7 +122,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: updatedUserDto.id,
           name: updatedUserDto.name,
           mobileNumber: updatedUserDto.mobileNumber,
-          isLoggedIn: updatedUserDto.loggedIn
+          isLoggedIn: updatedUserDto.loggedIn,
+          ritzTokenBalance: updatedUserDto.ritzTokenBalance
         };
         setUser(updatedUser);
         localStorage.setItem('user', JSON.stringify(updatedUser));

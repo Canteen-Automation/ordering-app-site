@@ -28,8 +28,139 @@
 }
 
 .address-card.selected, .payment-card.selected {
-  border-color: var(--primary);
-  background-color: var(--primary-light);
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.ritz-payment-card {
+  padding: 1.2rem;
+  border-radius: 20px;
+  cursor: default;
+}
+
+.ritz-payment-card.insufficient {
+  opacity: 0.8;
+  border-style: dashed;
+  background: rgba(239, 68, 68, 0.02);
+}
+
+.ritz-icon {
+  background: #6366f1;
+  color: white;
+}
+
+.payment-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.status-badge.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.wallet-balance-info {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.balance-val {
+  font-weight: 700;
+  color: #6366f1;
+}
+
+.add-tokens-checkout-btn {
+  width: 100%;
+  margin-top: 1rem;
+  background: white;
+  border: 1px dashed #6366f1;
+  padding: 1rem;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #6366f1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-tokens-checkout-btn:active {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.add-tokens-checkout-btn .btn-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+}
+
+.payment-security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.ritz-text {
+  color: #6366f1 !important;
+  font-weight: 800;
+}
+
+.insufficient-warning {
+  margin: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 149, 0, 0.1);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #cc7700;
+}
+
+.warning-text h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+
+.warning-text p {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.ritz-order-btn {
+  background: #6366f1 !important;
+}
+
+.ritz-order-btn:disabled {
+  background: var(--bg-secondary) !important;
+  opacity: 0.7;
+}
+
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 .address-icon, .payment-icon {

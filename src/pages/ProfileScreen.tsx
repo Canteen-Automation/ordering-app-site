@@ -8,9 +8,9 @@ import {
   ChevronRight,
   Phone,
   ShieldCheck,
-  User,
   X,
-  User as UserIcon
+  User as UserIcon,
+  Wallet
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -77,6 +77,7 @@ const ProfileScreen: React.FC = () => {
 
   const menuItems = [
     { icon: ShoppingBag, label: 'My Orders', sub: 'View order history', path: '/orders' },
+    { icon: Wallet, label: 'My Wallet', sub: 'Ritz Tokens & History', path: '/wallet' },
     { icon: ShieldCheck, label: 'Account Security', sub: 'Change Security PIN', path: '/change-pin' },
     { icon: Settings, label: 'Preferences', sub: 'Notifications, Language', path: '#' },
     { icon: HelpCircle, label: 'Help & Support', sub: 'FAQs, Contact Us', path: '#' }

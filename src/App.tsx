@@ -14,6 +14,8 @@ import LoginScreen from './pages/LoginScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import ChangePinScreen from './pages/ChangePinScreen';
 import StallDetailScreen from './pages/StallDetailScreen';
+import WalletScreen from './pages/WalletScreen';
+import TopUpScreen from './pages/TopUpScreen';
 import StockAlert from './components/StockAlert';
 import './App.css';
 
@@ -76,6 +78,16 @@ function App() {
               <Route path="/change-pin" element={
                 <ProtectedRoute>
                   <ChangePinScreen />
+                </ProtectedRoute>
+              } />
+              <Route path="/wallet" element={
+                <ProtectedRoute>
+                  <WalletScreen />
+                </ProtectedRoute>
+              } />
+              <Route path="/topup" element={
+                <ProtectedRoute>
+                  <TopUpScreen />
                 </ProtectedRoute>
               } />
             </Routes>

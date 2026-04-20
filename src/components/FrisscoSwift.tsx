@@ -115,7 +115,7 @@ const FrisscoSwift: React.FC<FrisscoSwiftProps> = ({
 
               <div className="amount-section">
                 <span className="label">Total Amount</span>
-                <span className="value">₹{(amount / 100).toFixed(2)}</span>
+                <span className="value">R{(amount / 100).toFixed(2)}</span>
               </div>
 
               <div className="qr-section">

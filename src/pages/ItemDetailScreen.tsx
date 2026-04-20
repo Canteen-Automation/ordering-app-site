@@ -49,7 +49,7 @@ const ItemDetailScreen: React.FC = () => {
             </div>
             
             <h1 className="item-name-large">{item.name}</h1>
-            <p className="item-price-large">₹{item.price.toFixed(2)}</p>
+            <p className="item-price-large">R{item.price.toFixed(2)}</p>
           </div>
 
           <div className="item-description-section">
@@ -88,7 +88,7 @@ const ItemDetailScreen: React.FC = () => {
       <footer className="item-footer">
         <div className="footer-price-info">
           <span className="total-label">Price</span>
-          <span className="total-value">₹{(item.price * Math.max(1, quantity)).toFixed(2)}</span>
+          <span className="total-value">R{(item.price * Math.max(1, quantity)).toFixed(2)}</span>
         </div>
         
         <div className="footer-action">
