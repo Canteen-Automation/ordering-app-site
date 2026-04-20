@@ -6,7 +6,8 @@ import {
   ShieldCheck, 
   Zap,
   Star,
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
@@ -23,17 +24,36 @@ const TopUpScreen: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [amount, setAmount] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const validate = (val: string) => {
+    if (!val) {
+      setError(null);
+      return;
+    }
+    const num = parseFloat(val);
+    if (num < 100) {
+      setError('Minimum amount is 100 Ritz');
+    } else if (num > 5000) {
+      setError('Maximum limit is 5,000 Ritz per transaction');
+    } else {
+      setError(null);
+    }
+  };
+
+  const handleAmountChange = (val: string) => {
+    setAmount(val);
+    validate(val);
+  };
 
   const handleTopUp = async () => {
     if (!user || !amount || parseFloat(amount) <= 0) return;
     
-    const currentBalance = user.ritzTokenBalance || 0;
     const topUpAmount = parseFloat(amount);
-    
-    if (currentBalance + topUpAmount > 5000) {
-      alert(`Wallet limit exceeded. You can only add up to ${5000 - currentBalance} more tokens.`);
+    if (topUpAmount < 100 || topUpAmount > 5000) {
+      validate(amount); // Ensure error is shown
       return;
     }
     
@@ -55,11 +75,11 @@ const TopUpScreen: React.FC = () => {
           navigate('/wallet');
         }, 2000);
       } else {
-        alert(data.error || 'Failed to add tokens');
+        setError(data.error || 'Failed to add tokens');
       }
     } catch (error) {
       console.error('Top up error:', error);
-      alert('Error connecting to server');
+      setError('Error connecting to server. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -85,12 +105,20 @@ const TopUpScreen: React.FC = () => {
                 type="number" 
                 className="amount-input" 
                 placeholder="0"
+                style={{ color: parseFloat(amount) > 5000 ? '#ef4444' : '#6366f1' }}
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => handleAmountChange(e.target.value)}
                 autoFocus
               />
             </div>
-            <p className="input-hint">1 Ritz Token = R1.00</p>
+            {error ? (
+              <div className="error-message">
+                <AlertCircle size={14} />
+                <span>{error}</span>
+              </div>
+            ) : (
+              <p className="input-hint">1 Ritz Token = R1.00</p>
+            )}
           </div>
 
           <div className="packs-grid">
@@ -98,7 +126,7 @@ const TopUpScreen: React.FC = () => {
               <button 
                 key={pack.amount}
                 className={`pack-card ${amount === pack.amount.toString() ? 'selected' : ''} ${pack.popular ? 'popular' : ''}`}
-                onClick={() => setAmount(pack.amount.toString())}
+                onClick={() => handleAmountChange(pack.amount.toString())}
               >
                 {pack.popular && <span className="popular-badge">Popular</span>}
                 <div className="pack-icon">{pack.icon}</div>
@@ -118,7 +146,7 @@ const TopUpScreen: React.FC = () => {
       <div className="topup-footer">
         <button 
           className="confirm-btn"
-          disabled={!amount || isProcessing}
+          disabled={!amount || !!error || isProcessing}
           onClick={handleTopUp}
         >
           {isProcessing ? (
