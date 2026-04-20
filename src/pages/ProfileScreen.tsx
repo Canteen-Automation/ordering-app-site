@@ -105,21 +105,6 @@ const ProfileScreen: React.FC = () => {
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="profile-stats">
-          <div className="stat-box" onClick={() => navigate('/orders')}>
-            <span className="stat-value">--</span>
-            <span className="stat-label">Orders</span>
-          </div>
-          <div className="stat-box">
-            <span className="stat-value">₹0</span>
-            <span className="stat-label">Spent</span>
-          </div>
-          <div className="stat-box">
-            <span className="stat-value">0</span>
-            <span className="stat-label">Coins</span>
-          </div>
-        </section>
 
         {/* Menu Section */}
         <section className="profile-menu">
