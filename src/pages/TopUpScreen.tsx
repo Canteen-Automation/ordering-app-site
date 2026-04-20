@@ -14,6 +14,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import BottomNav from '../components/BottomNav';
 import { useAuth } from '../contexts/AuthContext';
+import ritzStack from '../assets/Ritz-Stack.png';
 import './TopUpScreen.css';
 
 const TOKEN_PACKS = [
@@ -100,6 +101,11 @@ const TopUpScreen: React.FC = () => {
 
       <main className="safe-area-bottom">
         <div className="topup-container">
+          <div className="banner-section">
+            <img src={ritzStack} alt="Ritz Tokens" className="ritz-banner-img" />
+            <h2 className="banner-title">Top up Ritz</h2>
+          </div>
+          
           <div className="input-card">
             <span className="input-label">Enter Token Amount</span>
             <div className="amount-input-wrapper">

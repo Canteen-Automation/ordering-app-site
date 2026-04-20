@@ -79,26 +79,31 @@ const WalletScreen: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="card-top">
-              <div className="token-info">
-                <div className="token-icon">
-                  <CircleDollarSign size={24} />
-                </div>
-                <span>Available Ritz Tokens</span>
+              <div className="card-branding">
+                <span className="brand-name">Ritz Wallet</span>
+                <span className="brand-tier">RIT Canteen</span>
+                <div className="card-chip" />
               </div>
               <button className="refresh-btn" onClick={fetchData}>
                 <RefreshCcw size={18} className={isLoading ? 'spinning' : ''} />
               </button>
             </div>
             
-            <div className="token-balance">
-              <span className="token-symbol">R</span>
-              <span className="token-amount">{balance.toLocaleString()}</span>
+            <div className="token-balance-wrapper">
+              <div className="token-balance">
+                <span className="token-symbol">R</span>
+                <span className="token-amount">{balance.toLocaleString()}</span>
+              </div>
             </div>
 
-            <div className="card-actions">
-              <button className="topup-action-btn" onClick={() => navigate('/topup')}>
-                <Plus size={20} />
-                <span>Add Tokens</span>
+            <div className="card-bottom">
+              <div className="card-holder-info">
+                <span className="card-holder-label">Card Holder</span>
+                <span className="card-holder-name">{user?.name || 'Guest User'}</span>
+              </div>
+              <button className="topup-card-action" onClick={() => navigate('/topup')}>
+                <Plus size={18} />
+                <span>Top Up</span>
               </button>
             </div>
           </motion.div>

@@ -35,6 +35,32 @@
   padding: 24px 16px;
 }
 
+.banner-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 8px 0;
+}
+
+.ritz-banner-img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(35, 22, 81, 0.2));
+}
+
+.banner-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #231651 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .input-card {
   background: #f8f9ff;
   padding: 24px;
