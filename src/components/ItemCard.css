@@ -151,7 +151,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+  background: var(--primary-light);
   border: 1px solid var(--border);
 }
 
@@ -165,9 +165,9 @@
   bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow);
   border: 1px solid var(--border);
   min-width: 80px;
   display: flex;

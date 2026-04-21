@@ -10,18 +10,79 @@ import './ItemDetailScreen.css';
 const ItemDetailScreen: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
-  const { foodItems, isLoading } = useFood();
+  const { foodItems, isLoading: isGlobalLoading } = useFood();
+  const [fetchedItem, setFetchedItem] = React.useState<FoodItem | null>(null);
+  const [isFetching, setIsFetching] = React.useState(false);
   
-  const item = foodItems.find((i) => i.id === itemId);
+  const contextItem = foodItems.find((i) => i.id === itemId);
+  const item = contextItem || fetchedItem;
+
+  React.useEffect(() => {
+    if (!contextItem && itemId) {
+      const fetchItem = async () => {
+        setIsFetching(true);
+        try {
+          const response = await fetch(`http://${window.location.hostname}:8080/api/products/${itemId}`);
+          if (response.ok) {
+            const data = await response.json();
+            
+            // Map backend product to FoodItem type
+            const rawImg = data.imageData?.trim();
+            const finalImage = rawImg ? (rawImg.startsWith('data:') ? rawImg : `data:image/png;base64,${rawImg}`) : '';
+            
+            const stallInfo = data.stalls && data.stalls.length > 0 ? data.stalls[0] : null;
+            
+            const mappedItem: FoodItem = {
+              id: data.id.toString(),
+              name: data.name,
+              description: data.description || 'Quality food prepared with care',
+              price: data.price || data.basePrice || 0,
+              category: data.category,
+              image: finalImage,
+              isVeg: data.veg,
+              isPopular: data.active,
+              stock: data.stock,
+              stallId: stallInfo?.id?.toString(),
+              stallName: stallInfo?.name
+            };
+            setFetchedItem(mappedItem);
+          }
+        } catch (err) {
+          console.error('Error fetching individual product:', err);
+        } finally {
+          setIsFetching(false);
+        }
+      };
+      fetchItem();
+    }
+  }, [itemId, contextItem]);
   const quantity = item ? getItemQuantity(item.id) : 0;
   const isLimitReached = item && item.stock !== undefined && quantity >= item.stock && item.stock > 0;
 
-  if (isLoading && foodItems.length === 0) {
-    return <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
+  if ((isGlobalLoading && foodItems.length === 0) || isFetching) {
+    return (
+      <div className="container item-loading-wrapper">
+        <div className="loading-spinner-wrapper">
+          <div className="loading-spinner"></div>
+          <p>Loading Delights...</p>
+        </div>
+      </div>
+    );
   }
 
-  if (!item && !isLoading) return <div className="container" style={{ padding: 24 }}>Item not found</div>;
-  if (!item) return null;
+  if (!item && !isGlobalLoading && !isFetching) {
+    return (
+      <div className="container item-not-found-wrapper">
+        <Header />
+        <div className="not-found-content">
+          <AlertCircle size={64} className="not-found-icon" />
+          <h2>Item Not Found</h2>
+          <p>Oops! The item you're looking for seems to have vanished.</p>
+          <button className="back-home-btn" onClick={() => window.history.back()}>Go Back</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`container item-detail-page ${item.stock === 0 ? 'out-of-stock' : ''}`}>

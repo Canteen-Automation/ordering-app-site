@@ -19,7 +19,7 @@ const CartTab: React.FC = () => {
         <div className="cart-left-info" onClick={() => navigate('/cart')}>
           <div className="cart-stats">
             <ShoppingBag size={16} className="cart-icon" />
-            <span className="cart-count">
+            <span className="cart-tab-count">
               {totalItems} {totalItems === 1 ? 'item' : 'items'}
             </span>
           </div>

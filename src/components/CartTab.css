@@ -30,12 +30,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 16px;
   border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(35, 22, 81, 0.12);
+  box-shadow: var(--shadow);
   color: var(--text-dark);
 }
 
@@ -62,7 +62,7 @@
   flex-shrink: 0;
 }
 
-.cart-count {
+.cart-tab-count {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-mid);

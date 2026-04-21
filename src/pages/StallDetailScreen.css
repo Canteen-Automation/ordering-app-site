@@ -1,5 +1,5 @@
 .stall-detail-page {
-  background-color: #f7f8fc;
+  background-color: var(--bg);
   min-height: 100vh;
 }
 
@@ -12,9 +12,25 @@
 .detail-header.sticky {
   height: auto;
   padding: 12px 16px;
-  background: white;
+  background: var(--surface);
   z-index: 100;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow);
+}
+
+.stall-detail-page .add-to-cart-container {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  box-shadow: var(--shadow);
 }
 
 .stall-detail-page .back-button {
@@ -22,7 +38,7 @@
   top: 16px;
   left: 16px;
   z-index: 10;
-  background: white;
+  background: var(--surface);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -30,7 +46,7 @@
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow);
 }
 
 .header-image-container {
@@ -62,11 +78,11 @@
 
 .stall-main-card {
   margin: -40px 16px 20px;
-  background: white;
+  background: var(--surface);
   border-radius: 24px;
   padding: 24px;
   position: relative;
-  box-shadow: 0 8px 30px rgba(35, 22, 81, 0.08);
+  box-shadow: var(--shadow);
   z-index: 5;
 }
 
@@ -159,7 +175,7 @@
   padding: 40px 24px;
   text-align: center;
   color: var(--text-light);
-  background: white;
+  background: var(--surface);
   margin: 0 16px;
   border-radius: 16px;
   border: 1px dashed var(--border);

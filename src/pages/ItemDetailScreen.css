@@ -58,10 +58,74 @@
 }
 
 .placeholder-emoji {
-  font-size: 4rem;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
-  animation: float 3s ease-in-out infinite;
-  z-index: 1;
+  font-size: 3rem;
+  opacity: 0.6;
+}
+
+/* Loading & Not Found States */
+.item-loading-wrapper, .item-not-found-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg);
+}
+
+.loading-spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.not-found-content {
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.not-found-icon {
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.not-found-content h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.not-found-content p {
+  color: var(--text-mid);
+  max-width: 250px;
+}
+
+.back-home-btn {
+  margin-top: 12px;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: white;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
 }
 
 @keyframes float {
