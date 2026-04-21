@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   PlusCircle
 } from 'lucide-react';
+import tokenImage from '../assets/display_ritz.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import StockConflictModal from '../components/StockConflictModal';
@@ -139,21 +140,29 @@ const CheckoutScreen: React.FC = () => {
           </div>
           
           <div className="payment-options">
-            <div className={`payment-card ritz-payment-card ${isInsufficient ? 'insufficient' : 'selected'}`}>
-              <div className="payment-icon ritz-icon">
-                <CircleDollarSign size={24} />
+            <div className={`payment-card ritz-payment-card ${isInsufficient ? 'insufficient-state' : 'selected'}`}>
+              <div className="payment-icon ritz-token-avatar">
+                <img src={tokenImage} alt="Ritz Token" className="token-image-main" />
               </div>
               <div className="payment-info">
                 <div className="payment-name-row">
                   <span className="payment-name">Pay with Ritz Tokens</span>
                   {isInsufficient && (
-                    <span className="status-badge error">Insufficient Balance</span>
+                    <motion.span 
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="status-badge-premium error"
+                    >
+                      Insufficient
+                    </motion.span>
                   )}
                 </div>
                 <div className="wallet-balance-info">
-                  <Wallet size={14} />
-                  <span>Current Balance: </span>
-                  <span className="balance-val">R{currentBalance.toLocaleString()}</span>
+                  <Wallet size={14} className={isInsufficient ? 'text-rose-400' : ''} />
+                  <span>Your Balance: </span>
+                  <span className={`balance-val ${isInsufficient ? 'insufficient-val' : ''}`}>
+                    R{currentBalance.toLocaleString()}
+                  </span>
                 </div>
               </div>
               {!isInsufficient && (
@@ -194,13 +203,24 @@ const CheckoutScreen: React.FC = () => {
         </div>
 
         {isInsufficient && (
-          <div className="insufficient-warning">
-            <AlertCircle size={20} />
-            <div className="warning-text">
-              <strong>Short by R{(totalPrice - currentBalance).toLocaleString()}</strong>
-              <p>Add more tokens to complete your order.</p>
+          <motion.div 
+            className="insufficient-warning-premium"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="warning-icon-wrapper token-warning-visual">
+              <img src={tokenImage} alt="" className="token-image-mini" />
+              <div className="warning-icon-overlay">
+                <AlertCircle size={16} />
+              </div>
             </div>
-          </div>
+            <div className="warning-content">
+              <div className="shortfall-amount">
+                Short by <span className="highlight">R{(totalPrice - currentBalance).toLocaleString()}</span>
+              </div>
+              <p className="warning-instruction">Add tokens to your wallet to complete this order.</p>
+            </div>
+          </motion.div>
         )}
       </main>
 

@@ -15,14 +15,18 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import BottomNav from '../components/BottomNav';
 import { useAuth } from '../contexts/AuthContext';
-import ritzStack from '../assets/Ritz-Stack.png';
+import ritz100 from '../assets/Ritz_100.png';
+import ritz500 from '../assets/Ritz-Stack.png';
+import ritz1000 from '../assets/Ritz_1000.png';
+import ritz2000 from '../assets/Ritz_2000.png';
+import ritzStackHero from '../assets/Ritz-Stack.png';
 import './TopUpScreen.css';
 
 const TOKEN_PACKS = [
-  { amount: 100, label: 'Starter', icon: <Zap size={20} /> },
-  { amount: 500, label: 'Value', icon: <Star size={20} />, popular: true },
-  { amount: 1000, label: 'Premium', icon: <Gem size={20} /> },
-  { amount: 2000, label: 'Ultimate', icon: <Crown size={20} /> }
+  { amount: 100, label: 'Starter', image: ritz100 },
+  { amount: 500, label: 'Value', image: ritz500, popular: true },
+  { amount: 1000, label: 'Premium', image: ritz1000 },
+  { amount: 2000, label: 'Ultimate', image: ritz2000 }
 ];
 
 const TopUpScreen: React.FC = () => {
@@ -141,7 +145,7 @@ const TopUpScreen: React.FC = () => {
       <main className="safe-area-bottom">
         <div className="topup-container">
           <div className="banner-section">
-            <img src={ritzStack} alt="Ritz Tokens" className="ritz-banner-img" />
+            <img src={ritzStackHero} alt="Ritz Tokens" className="ritz-banner-img" />
             <h2 className="banner-title">Top up Ritz</h2>
           </div>
           
@@ -177,7 +181,9 @@ const TopUpScreen: React.FC = () => {
                 onClick={() => handleAmountChange(pack.amount.toString())}
               >
                 {pack.popular && <span className="popular-badge">Popular</span>}
-                <div className="pack-icon">{pack.icon}</div>
+                <div className="pack-icon-premium">
+                   <img src={pack.image} alt={pack.label} className="pack-image-asset" />
+                </div>
                 <div className="pack-amount">R{pack.amount}</div>
                 <div className="pack-label">{pack.label}</div>
               </button>

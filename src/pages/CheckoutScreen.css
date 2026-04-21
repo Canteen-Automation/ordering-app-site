@@ -38,43 +38,66 @@
   cursor: default;
 }
 
-.ritz-payment-card.insufficient {
-  opacity: 0.8;
-  border-style: dashed;
-  background: rgba(239, 68, 68, 0.02);
+.ritz-payment-card.insufficient-state {
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  background: rgba(244, 63, 94, 0.03);
+  position: relative;
+  overflow: hidden;
 }
 
-.ritz-icon {
-  background: #6366f1;
+.ritz-payment-card.insufficient-state::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #f43f5e;
+}
+
+.status-badge-premium {
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.status-badge-premium.error {
+  background: #f43f5e;
   color: white;
+}
+
+.payment-icon.ritz-token-avatar {
+  background: transparent;
+  width: 54px;
+  height: 54px;
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.2));
+}
+
+.token-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .payment-name-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.status-badge {
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  text-transform: uppercase;
-}
-
-.status-badge.error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  margin-bottom: 4px;
 }
 
 .wallet-balance-info {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .balance-val {
@@ -82,40 +105,49 @@
   color: #6366f1;
 }
 
+.insufficient-val {
+  color: #f43f5e !important;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
 .add-tokens-checkout-btn {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 12px;
   background: white;
-  border: 1px dashed #6366f1;
+  border: 1.5px dashed rgba(99, 102, 241, 0.4);
   padding: 1rem;
-  border-radius: 16px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #6366f1;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .add-tokens-checkout-btn:active {
   background: rgba(99, 102, 241, 0.05);
+  transform: scale(0.98);
 }
 
 .add-tokens-checkout-btn .btn-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-weight: 700;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 0.9rem;
 }
 
 .payment-security-note {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 6px;
   margin-top: 1.5rem;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .ritz-text {
@@ -123,26 +155,66 @@
   font-weight: 800;
 }
 
-.insufficient-warning {
+.insufficient-warning-premium {
   margin: 1.5rem;
-  padding: 1rem;
-  background: rgba(255, 149, 0, 0.1);
-  border-radius: 16px;
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid rgba(244, 63, 94, 0.1);
+  border-radius: 24px;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  color: #cc7700;
+  gap: 1.25rem;
+  box-shadow: 0 12px 30px -10px rgba(244, 63, 94, 0.15);
 }
 
-.warning-text h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin-bottom: 0.1rem;
+.token-warning-visual {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  background: transparent;
+  filter: drop-shadow(0 6px 15px rgba(244, 63, 94, 0.2));
 }
 
-.warning-text p {
+.token-image-mini {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(-10deg);
+}
+
+.warning-icon-overlay {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  background: #f43f5e;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 4px 8px rgba(244, 63, 94, 0.3);
+}
+
+.shortfall-amount {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 0.25rem;
+}
+
+.shortfall-amount .highlight {
+  color: #f43f5e;
+  font-size: 1.1rem;
+}
+
+.warning-instruction {
   font-size: 0.8rem;
-  opacity: 0.9;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0;
 }
 
 .ritz-order-btn {
