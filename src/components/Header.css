@@ -123,7 +123,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(35, 22, 81, 0.05); /* Light Purple Wash */
+  background-color: var(--primary-light);
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid var(--border);
@@ -144,7 +144,7 @@
 
 .cart-count {
   background-color: white;
-  color: #000000; /* Black text as requested earlier */
+  color: #000000; 
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -172,4 +172,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+/* Dark Mode Overrides for Light Header */
+[data-theme='dark'] .app-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .app-header .header-title,
+[data-theme='dark'] .app-header .location-label {
+  color: #231651;
+}
+
+[data-theme='dark'] .app-header .location-sub {
+  color: #4a3e7a;
+}
+
+[data-theme='dark'] .app-header .back-button,
+[data-theme='dark'] .app-header .icon-button:not(.profile) {
+  background-color: #f0f1ff;
+  color: #231651;
+}
+
+[data-theme='dark'] .app-header .search-bar {
+  background-color: #f0f1ff;
+  border-color: rgba(35, 22, 81, 0.1);
+}
+
+[data-theme='dark'] .app-header .cart-count {
+  background-color: #231651;
+  color: white;
 }

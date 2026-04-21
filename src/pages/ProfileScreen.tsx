@@ -79,7 +79,7 @@ const ProfileScreen: React.FC = () => {
     { icon: ShoppingBag, label: 'My Orders', sub: 'View order history', path: '/orders' },
     { icon: Wallet, label: 'My Wallet', sub: 'Ritz Tokens & History', path: '/wallet' },
     { icon: ShieldCheck, label: 'Account Security', sub: 'Change Security PIN', path: '/change-pin' },
-    { icon: Settings, label: 'Preferences', sub: 'Notifications, Language', path: '#' },
+    { icon: Settings, label: 'Preferences', sub: 'Dark Mode, Language', path: '/preferences' },
     { icon: HelpCircle, label: 'Help & Support', sub: 'FAQs, Contact Us', path: '#' }
   ];
 

@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -53,7 +53,7 @@
 .banner-title {
   font-size: 2.2rem;
   font-weight: 900;
-  background: linear-gradient(135deg, #231651 0%, #6366f1 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -2px;
@@ -62,7 +62,7 @@
 }
 
 .input-card {
-  background: #f8f9ff;
+  background: var(--input-bg);
   padding: 24px;
   border-radius: 24px;
   border: 1px solid var(--border);
@@ -120,7 +120,7 @@
 }
 
 .pack-card {
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   padding: 20px;
   border-radius: 20px;
@@ -203,7 +203,7 @@
 .topup-footer {
   margin-top: auto;
   padding: 24px 16px;
-  background: white;
+  background: var(--surface);
   border-top: 1px solid var(--border);
 }
 
@@ -250,7 +250,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -260,6 +260,10 @@
 .success-content {
   text-align: center;
   padding: 32px;
+  background: var(--surface);
+  border-radius: 32px;
+  margin: 20px;
+  box-shadow: var(--shadow);
 }
 
 .success-icon-wrapper {
@@ -326,7 +330,7 @@
 }
 
 .redeem-card {
-  background: white;
+  background: var(--surface);
   padding: 24px;
   border-radius: 28px;
   border: 2px border-dashed var(--border);
@@ -343,7 +347,7 @@
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  background: #f8fafc;
+  background: var(--bg);
   border-radius: 50%;
   border-right: 1px solid var(--border);
 }
@@ -356,7 +360,7 @@
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  background: #f8fafc;
+  background: var(--bg);
   border-radius: 50%;
   border-left: 1px solid var(--border);
 }
@@ -392,7 +396,7 @@
 
 .redeem-input {
   flex: 1;
-  background: #f8f9ff;
+  background: var(--input-bg);
   border: 1px solid var(--border);
   padding: 14px 18px;
   border-radius: 16px;
@@ -428,8 +432,8 @@
 }
 
 .redeem-btn:disabled {
-  background: #e2e8f0;
-  color: white;
+  background: var(--border);
+  color: var(--text-light);
   cursor: not-allowed;
 }
 

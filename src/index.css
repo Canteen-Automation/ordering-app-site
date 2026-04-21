@@ -1,9 +1,11 @@
 :root {
+  /* LIGHT THEME (Default) */
   --primary: #231651;
+  --primary-rgb: 35, 22, 81;
   --primary-light: #f0f1ff;
-  --bg: #ffffff;
+  --bg: #f8f9fe;
   --surface: #ffffff;
-  --border: rgba(35, 22, 81, 0.1);
+  --border: rgba(35, 22, 81, 0.08);
   --green: #00B894;
   --green-light: #E6FFFA;
   --red: #ff4d4f;
@@ -12,6 +14,28 @@
   --text-light: #7b71af;
   --star: #f4c640;
   --shadow: 0 4px 20px rgba(35, 22, 81, 0.05);
+  --input-bg: #f8f9ff;
+  --modal-overlay: rgba(35, 22, 81, 0.3);
+}
+
+[data-theme='dark'] {
+  /* DARK THEME - Visual Poetry Deep Slate & Indigo */
+  --primary: #9d87ff; /* Softer, glowing purple for dark mode */
+  --primary-rgb: 157, 135, 255;
+  --primary-light: #251b4d;
+  --bg: #0b0e14;
+  --surface: #151921;
+  --border: rgba(157, 135, 255, 0.12);
+  --green: #00d2aa;
+  --green-light: #062d26;
+  --red: #ff6b6b;
+  --text-dark: #f0f2f5;
+  --text-mid: #a0aec0;
+  --text-light: #718096;
+  --star: #ffd700;
+  --shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --input-bg: #1c212b;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
 }
 
 * {

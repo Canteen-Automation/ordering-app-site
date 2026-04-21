@@ -26,10 +26,10 @@
 }
 
 .latest-order-card {
-  background: white;
+  background: var(--surface);
   border-radius: 24px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -129,7 +129,7 @@
 }
 
 .order-item-list {
-  background: white;
+  background: var(--surface);
   padding: 14px;
   border-radius: 16px;
   display: flex;
@@ -203,7 +203,7 @@
 
 .order-detail-modal {
   width: 100%;
-  background: white;
+  background: var(--surface);
   border-radius: 24px 24px 0 0;
   padding: 24px;
   display: flex;
@@ -263,7 +263,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   padding: 8px 16px;
   border-radius: 20px;
@@ -401,7 +401,7 @@
 }
 
 .stock-alert-modal {
-  background: white;
+  background: var(--surface);
   width: 100%;
   max-width: 400px;
   border-radius: 28px;
@@ -463,10 +463,10 @@
   font-size: 13px;
   font-weight: 700;
   color: #e11d48;
-  background: white;
+  background: var(--bg);
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid #fecdd3;
+  border: 1px solid var(--border);
 }
 
 .alert-actions {

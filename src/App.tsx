@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { FoodProvider } from './contexts/FoodContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomeScreen from './pages/HomeScreen';
 import CategoryScreen from './pages/CategoryScreen';
@@ -16,14 +17,16 @@ import ChangePinScreen from './pages/ChangePinScreen';
 import StallDetailScreen from './pages/StallDetailScreen';
 import WalletScreen from './pages/WalletScreen';
 import TopUpScreen from './pages/TopUpScreen';
+import PreferencesScreen from './pages/PreferencesScreen';
 import StockAlert from './components/StockAlert';
 import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <FoodProvider>
-        <CartProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <FoodProvider>
+          <CartProvider>
           <StockAlert />
           <Router>
             <Routes>
@@ -90,11 +93,17 @@ function App() {
                   <TopUpScreen />
                 </ProtectedRoute>
               } />
+              <Route path="/preferences" element={
+                <ProtectedRoute>
+                  <PreferencesScreen />
+                </ProtectedRoute>
+              } />
             </Routes>
           </Router>
         </CartProvider>
       </FoodProvider>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

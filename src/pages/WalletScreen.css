@@ -220,7 +220,7 @@
 
 .view-all {
   font-size: 0.85rem;
-  color: var(--text-mid);
+  color: var(--primary);
   font-weight: 700;
 }
 
@@ -231,7 +231,7 @@
 }
 
 .transaction-item {
-  background: #f8f9ff;
+  background: var(--surface);
   padding: 14px 16px;
   border-radius: 16px;
   display: flex;
@@ -242,7 +242,7 @@
 }
 
 .transaction-item:active {
-  background: white;
+  background: var(--primary-light);
   transform: scale(0.98);
 }
 
@@ -257,13 +257,13 @@
 }
 
 .trans-icon.topup {
-  background: #e6fffa;
-  color: #00b894;
+  background: var(--green-light);
+  color: var(--green);
 }
 
 .trans-icon.spend {
-  background: #fff1f2;
-  color: #ef4444;
+  background: rgba(255, 77, 79, 0.1);
+  color: var(--red);
 }
 
 .trans-details {

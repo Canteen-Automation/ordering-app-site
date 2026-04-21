@@ -157,7 +157,7 @@ const TopUpScreen: React.FC = () => {
                 type="number" 
                 className="amount-input" 
                 placeholder="0"
-                style={{ color: parseFloat(amount) > 5000 ? '#ef4444' : '#6366f1' }}
+                style={{ color: parseFloat(amount) > 5000 ? 'var(--red)' : 'var(--primary)' }}
                 value={amount}
                 onChange={(e) => handleAmountChange(e.target.value)}
                 autoFocus
