@@ -10,6 +10,7 @@ interface AuthContextType {
   logout: () => void;
   changePin: (currentPin: string, newPin: string) => Promise<{ success: boolean; message: string }>;
   updateProfile: (name: string, mobileNumber: string) => Promise<{ success: boolean; message: string }>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -137,35 +138,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Background suspension check
+  const refreshUser = async () => {
+    if (!user) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/${user.mobileNumber}`, { cache: 'no-store' });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedUser: User = {
+          id: data.id,
+          name: data.name,
+          mobileNumber: data.mobileNumber,
+          isLoggedIn: data.isLoggedIn || data.loggedIn || true,
+          isSuspended: data.isSuspended || data.suspended,
+          ritzTokenBalance: data.ritzTokenBalance
+        };
+        
+        // Update state and localStorage
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      } else if (response.status === 404) {
+        logout();
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
+  };
+
+  // Background status and balance sync
   useEffect(() => {
     if (!user) return;
 
-    const checkSuspensionStatus = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/user/${user.mobileNumber}`, { cache: 'no-store' });
-        if (response.status === 404) {
-             logout(); // User deleted
-             return;
-        }
-        if (response.ok) {
-          const data = await response.json();
-          if (data.isSuspended || data.suspended) {
-            console.log("Account suspended. Logging out...");
-            logout();
-          }
-        }
-      } catch (error) {
-        console.error('Error checking user status:', error);
-      }
+    const syncUserStatus = async () => {
+      await refreshUser();
     };
 
-    const intervalId = setInterval(checkSuspensionStatus, 30000); // Check every 30 seconds
+    const intervalId = setInterval(syncUserStatus, 30000); // Sync every 30 seconds
     return () => clearInterval(intervalId);
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, checkUserExists, login, register, logout, changePin, updateProfile }}>
+    <AuthContext.Provider value={{ user, isLoading, checkUserExists, login, register, logout, changePin, updateProfile, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

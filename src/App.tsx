@@ -18,6 +18,7 @@ import StallDetailScreen from './pages/StallDetailScreen';
 import WalletScreen from './pages/WalletScreen';
 import TopUpScreen from './pages/TopUpScreen';
 import PreferencesScreen from './pages/PreferencesScreen';
+import NotFoundScreen from './pages/NotFoundScreen';
 import StockAlert from './components/StockAlert';
 import './App.css';
 
@@ -98,6 +99,7 @@ function App() {
                   <PreferencesScreen />
                 </ProtectedRoute>
               } />
+              <Route path="*" element={<NotFoundScreen />} />
             </Routes>
           </Router>
         </CartProvider>

@@ -1,19 +1,58 @@
 .welcome-section {
-  padding: 24px 16px 8px;
-  background-color: var(--surface);
+  padding: 24px 20px 16px;
+}
+
+.greeting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .welcome-message {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 850;
   color: var(--text-dark);
-  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.wallet-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.wallet-badge:active {
+  transform: scale(0.95);
+}
+
+.wallet-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.wallet-balance-text {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--primary-color);
+  letter-spacing: -0.01em;
 }
 
 .welcome-subtitle {
-  font-size: 0.95rem;
+  font-size: 15px;
   color: var(--text-mid);
-  margin-top: 4px;
+  font-weight: 500;
+  margin: 0;
 }
 
 .search-bar-container {

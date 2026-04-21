@@ -9,12 +9,13 @@ import FeedbackModal from '../components/FeedbackModal';
 import { useFood } from '../contexts/FoodContext';
 import { useAuth } from '../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import walletIcon from '../assets/front.png';
 import './HomeScreen.css';
 
 const HomeScreen: React.FC = () => {
   const navigate = useNavigate();
   const { categories, stalls, foodItems, isLoading, error, refreshData } = useFood();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   
   // Feedback state
@@ -25,6 +26,7 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     if (user?.id) {
       checkForUnratedOrder();
+      refreshUser();
     }
   }, [user]);
 
@@ -123,7 +125,15 @@ const HomeScreen: React.FC = () => {
 
       <main className="safe-area-bottom">
         <div className="welcome-section">
-          <h1 className="welcome-message">Hello {user?.name || 'Guest'}!</h1>
+          <div className="greeting-row">
+            <h1 className="welcome-message">Hello {user?.name || 'Guest'}!</h1>
+            {user && (
+              <div className="wallet-badge" onClick={() => navigate('/wallet')}>
+                <img src={walletIcon} alt="Wallet" className="wallet-icon-img" />
+                <span className="wallet-balance-text">R {user.ritzTokenBalance || 0}</span>
+              </div>
+            )}
+          </div>
           <p className="welcome-subtitle">What would you like to eat today?</p>
         </div>
 

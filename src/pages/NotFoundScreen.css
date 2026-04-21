@@ -1,0 +1,134 @@
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+    text-align: center;
+}
+
+.not-found-content {
+    background: var(--card-background, #fff);
+    padding: 40px 30px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    max-width: 450px;
+    width: 100%;
+}
+
+.not-found-icon-wrapper {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 24px;
+}
+
+.not-found-icon {
+    color: var(--primary-color, #ff4d4d);
+    opacity: 0.9;
+}
+
+.alert-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ffcc00;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px border var(--card-background, #fff);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.not-found-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary, #1a1a1a);
+    margin-bottom: 12px;
+}
+
+.not-found-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary, #666);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.not-found-visual {
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error-code {
+    font-size: 80px;
+    font-weight: 950;
+    color: var(--primary-color, #ff4d4d);
+    opacity: 0.1;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+
+.decoration-line {
+    width: 60px;
+    height: 4px;
+    background: var(--primary-color, #ff4d4d);
+    border-radius: 2px;
+    margin-top: -10px;
+}
+
+.not-found-actions {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+}
+
+.primary-button, .secondary-button {
+    padding: 14px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.primary-button {
+    background: var(--primary-color, #ff4d4d);
+    color: #fff;
+}
+
+.primary-button:active {
+    transform: scale(0.98);
+}
+
+.secondary-button {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.not-found-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.not-found-footer p {
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 480px) {
+    .not-found-content {
+        padding: 30px 20px;
+    }
+}
