@@ -9,7 +9,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Gem,
-  Crown
+  Crown,
+  Ticket
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BottomNav from '../components/BottomNav';
@@ -31,6 +32,10 @@ const TopUpScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [redeemError, setRedeemError] = useState<string | null>(null);
+  const [rewardAmount, setRewardAmount] = useState<number | null>(null);
 
   const validate = (val: string) => {
     if (!val) {
@@ -86,6 +91,40 @@ const TopUpScreen: React.FC = () => {
       setError('Error connecting to server. Please try again.');
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleRedeem = async () => {
+    if (!user || !couponCode) return;
+    
+    setIsRedeeming(true);
+    setRedeemError(null);
+    
+    try {
+      const response = await fetch(`http://${window.location.hostname}:8080/api/coupons/redeem`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          code: couponCode
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setRewardAmount(data.rewardAmount);
+        setShowSuccess(true);
+        setTimeout(() => {
+          navigate('/wallet', { replace: true });
+        }, 2000);
+      } else {
+        setRedeemError(data.message || 'Invalid code');
+      }
+    } catch (error) {
+      console.error('Redemption error:', error);
+      setRedeemError('Error connecting to server');
+    } finally {
+      setIsRedeeming(false);
     }
   };
 
@@ -149,6 +188,44 @@ const TopUpScreen: React.FC = () => {
             <ShieldCheck size={16} />
             <span>Secure simulated transaction via Ritz Payments</span>
           </div>
+
+          <div className="divider-section">
+            <div className="divider-line" />
+            <span className="divider-text">OR</span>
+            <div className="divider-line" />
+          </div>
+
+          <div className="redeem-card">
+            <div className="redeem-header">
+              <Ticket size={20} className="redeem-icon" />
+              <h3>Redeem Coupon Code</h3>
+            </div>
+            <p className="redeem-hint">Enter a gift code to claim Ritz tokens</p>
+            
+            <div className="redeem-input-wrapper">
+              <input 
+                type="text" 
+                className="redeem-input" 
+                placeholder="Ex: WELCOME50"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                disabled={isRedeeming}
+              />
+              <button 
+                className="redeem-btn" 
+                onClick={handleRedeem}
+                disabled={!couponCode || isRedeeming}
+              >
+                {isRedeeming ? <div className="btn-spinner" /> : 'Redeem'}
+              </button>
+            </div>
+            {redeemError && (
+               <div className="redeem-error">
+                  <AlertCircle size={14} />
+                  <span>{redeemError}</span>
+               </div>
+            )}
+          </div>
         </div>
       </main>
 
@@ -182,8 +259,8 @@ const TopUpScreen: React.FC = () => {
               <div className="success-icon-wrapper">
                 <CheckCircle2 size={64} className="success-check" />
               </div>
-              <h2>Tokens Added!</h2>
-              <p>R{amount} has been added to your Ritz Wallet.</p>
+              <h2>{rewardAmount ? 'Tokens Redeemed!' : 'Tokens Added!'}</h2>
+              <p>R{rewardAmount || amount} has been added to your Ritz Wallet.</p>
             </motion.div>
           </motion.div>
         )}
