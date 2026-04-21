@@ -33,6 +33,7 @@ export interface User {
   mobileNumber: string;
   name: string;
   isLoggedIn: boolean;
+  isSuspended: boolean;
   ritzTokenBalance: number;
 }
 

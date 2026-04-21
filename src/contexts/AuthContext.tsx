@@ -117,12 +117,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.ok) {
         const updatedUserDto = await response.json();
-        // The DTO from backend might have different structure, let's map it back to User type
         const updatedUser: User = {
           id: updatedUserDto.id,
           name: updatedUserDto.name,
           mobileNumber: updatedUserDto.mobileNumber,
           isLoggedIn: updatedUserDto.loggedIn,
+          isSuspended: updatedUserDto.suspended,
           ritzTokenBalance: updatedUserDto.ritzTokenBalance
         };
         setUser(updatedUser);
@@ -136,6 +136,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: false, message: 'Network error. Please try again.' };
     }
   };
+
+  // Background suspension check
+  useEffect(() => {
+    if (!user) return;
+
+    const checkSuspensionStatus = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/user/${user.mobileNumber}`, { cache: 'no-store' });
+        if (response.status === 404) {
+             logout(); // User deleted
+             return;
+        }
+        if (response.ok) {
+          const data = await response.json();
+          if (data.isSuspended || data.suspended) {
+            console.log("Account suspended. Logging out...");
+            logout();
+          }
+        }
+      } catch (error) {
+        console.error('Error checking user status:', error);
+      }
+    };
+
+    const intervalId = setInterval(checkSuspensionStatus, 30000); // Check every 30 seconds
+    return () => clearInterval(intervalId);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, checkUserExists, login, register, logout, changePin, updateProfile }}>

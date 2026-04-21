@@ -15,6 +15,7 @@ const LoginScreen: React.FC = () => {
   const [pin, setPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuspended, setIsSuspended] = useState(false);
 
   const handleMobileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +54,8 @@ const LoginScreen: React.FC = () => {
 
     if (result.success) {
       navigate('/');
+    } else if (result.isSuspended) {
+      setIsSuspended(true);
     } else {
       setError(result.message);
     }
@@ -215,6 +218,24 @@ const LoginScreen: React.FC = () => {
           <p>RIT Canteen Management System</p>
         </div>
       </div>
+
+      {isSuspended && (
+        <div className="suspension-overlay">
+          <div className="suspension-modal animate-zoomIn">
+            <div className="suspension-icon">
+              <Lock size={40} />
+            </div>
+            <h2>Account Suspended</h2>
+            <p>Your access to the RIT Canteen system has been restricted by an administrator.</p>
+            <div className="suspension-details">
+              <span>Please contact the Admin or Manager to resolve this issue.</span>
+            </div>
+            <button className="suspension-close-btn" onClick={() => setIsSuspended(false)}>
+              Back to Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
