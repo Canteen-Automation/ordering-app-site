@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../api';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
@@ -22,7 +23,7 @@ const ItemDetailScreen: React.FC = () => {
       const fetchItem = async () => {
         setIsFetching(true);
         try {
-          const response = await fetch(`http://${window.location.hostname}:8080/api/products/${itemId}`);
+          const response = await apiFetch(`http://${window.location.hostname}:8080/api/products/${itemId}`);
           if (response.ok) {
             const data = await response.json();
             

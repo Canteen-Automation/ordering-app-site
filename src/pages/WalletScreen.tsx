@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -41,12 +42,12 @@ const WalletScreen: React.FC = () => {
     try {
       setIsLoading(true);
       // Fetch balance
-      const balRes = await fetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`);
+      const balRes = await apiFetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`);
       const balData = await balRes.json();
       setBalance(balData.balance || 0);
 
       // Fetch transactions
-      const transRes = await fetch(`http://${window.location.hostname}:8080/api/wallet/transactions/${user.id}`);
+      const transRes = await apiFetch(`http://${window.location.hostname}:8080/api/wallet/transactions/${user.id}`);
       const transData = await transRes.json();
       setTransactions(transData);
     } catch (error) {

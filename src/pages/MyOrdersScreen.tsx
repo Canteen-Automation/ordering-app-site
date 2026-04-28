@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, ShoppingBag as ShoppingBagIcon, ChevronRight as ChevronRightIcon, X, RefreshCcw, AlertCircle, ShoppingCart } from 'lucide-react';
@@ -79,7 +80,7 @@ const MyOrdersScreen: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders/user/${user?.id}`);
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/orders/user/${user?.id}`);
       const data = await response.json();
       setOrders(data);
     } catch (error) {
@@ -133,7 +134,7 @@ const MyOrdersScreen: React.FC = () => {
     setIsRegenerating(true);
     try {
       const newOrderNumber = `ORD-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders/${selectedOrder.id}`, {
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/orders/${selectedOrder.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

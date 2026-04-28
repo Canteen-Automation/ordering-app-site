@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../api';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, RefreshCcw, X, Star, ChevronRight } from 'lucide-react';
@@ -35,7 +36,7 @@ const HomeScreen: React.FC = () => {
     if (sessionStorage.getItem('feedback_dismissed')) return;
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`);
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`);
       if (response.status === 200) {
         const order = await response.json();
         console.log('Unrated order found:', order);
@@ -53,7 +54,7 @@ const HomeScreen: React.FC = () => {
     if (!unratedOrder) return;
     
     try {
-      await fetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
+      await apiFetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
         method: 'POST'
       });
       setShowFeedbackModal(false);
@@ -70,7 +71,7 @@ const HomeScreen: React.FC = () => {
 
   const handleFeedbackSubmit = async (feedbackData: any) => {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(feedbackData)

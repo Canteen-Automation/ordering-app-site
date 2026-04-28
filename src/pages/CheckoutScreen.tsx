@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -38,7 +39,7 @@ const CheckoutScreen: React.FC = () => {
     if (!user) return;
     try {
       setIsLoadingBalance(true);
-      const response = await fetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`);
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`);
       const data = await response.json();
       setCurrentBalance(data.balance || 0);
     } catch (error) {
@@ -76,7 +77,7 @@ const CheckoutScreen: React.FC = () => {
     };
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders`, {
+      const response = await apiFetch(`http://${window.location.hostname}:8080/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
