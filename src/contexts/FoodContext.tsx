@@ -12,7 +12,7 @@ interface FoodContextType {
 
 const FoodContext = createContext<FoodContextType | undefined>(undefined);
 
-const API_BASE_URL = `http://${window.location.hostname}:8080/api`;
+const API_BASE_URL = '/api';
 
 const EMOJIS = ['🍦', '🍪', '🧃', '🍫', '🥨', '🥐', '🍹', '📦', '🍳', '🍱', '🍔', '🍕', '🥗', '🍲'];
 const COLORS = ['#FFF0F6', '#FFF7ED', '#FFFFEB', '#FDF3EF', '#F0FDF4', '#FEFCE8', '#EFF6FF'];

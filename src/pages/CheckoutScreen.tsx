@@ -36,7 +36,7 @@ const CheckoutScreen: React.FC = () => {
     if (!user) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:8080/api/wallet/balance/${user.id}`, {
+      const response = await fetch(`/api/wallet/balance/${user.id}`, {
         headers: {
           ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         }
@@ -77,7 +77,7 @@ const CheckoutScreen: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders`, {
+      const response = await fetch(`/api/orders`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

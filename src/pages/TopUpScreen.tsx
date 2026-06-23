@@ -1,4 +1,4 @@
-﻿import { apiFetch } from '../api';
+import { apiFetch } from '../api';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -73,7 +73,7 @@ const TopUpScreen: React.FC = () => {
     
     setIsProcessing(true);
     try {
-      const response = await apiFetch(`http://${window.location.hostname}:8080/api/wallet/topup`, {
+      const response = await apiFetch(`/api/wallet/topup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -106,7 +106,7 @@ const TopUpScreen: React.FC = () => {
     setRedeemError(null);
     
     try {
-      const response = await apiFetch(`http://${window.location.hostname}:8080/api/coupons/redeem`, {
+      const response = await apiFetch(`/api/coupons/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

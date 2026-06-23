@@ -36,7 +36,7 @@ const HomeScreen: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`, {
+      const response = await fetch(`/api/feedback/latest-unrated/${user?.id}`, {
         headers: {
           ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         }
@@ -59,7 +59,7 @@ const HomeScreen: React.FC = () => {
     
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
+      await fetch(`/api/feedback/skip/${unratedOrder.id}`, {
         method: 'POST',
         headers: {
           ...(token ? { 'Authorization': `Bearer ${token}` } : {})
@@ -80,7 +80,7 @@ const HomeScreen: React.FC = () => {
   const handleFeedbackSubmit = async (feedbackData: any) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
+      const response = await fetch(`/api/feedback/submit`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

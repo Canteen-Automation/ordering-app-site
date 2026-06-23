@@ -18,7 +18,7 @@ const StallDetailScreen: React.FC = () => {
     const fetchStallDetails = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://${window.location.hostname}:8080/api/stalls/${id}`);
+        const response = await fetch(`/api/stalls/${id}`);
         if (!response.ok) throw new Error('Stall not found');
         const data = await response.json();
         
@@ -61,8 +61,7 @@ const StallDetailScreen: React.FC = () => {
     fetchStallDetails();
 
     // SSE Real-time stock updates
-    const host = window.location.hostname;
-    const eventSource = new EventSource(`http://${host}:8080/api/stock/stream`);
+    const eventSource = new EventSource(`/api/stock/stream`);
 
     eventSource.addEventListener('stockUpdate', (event: any) => {
       try {

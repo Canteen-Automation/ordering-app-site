@@ -80,7 +80,7 @@ const MyOrdersScreen: React.FC = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders/user/${user?.id}`, {
+      const response = await fetch(`/api/orders/user/${user?.id}`, {
         headers: {
           ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         }
@@ -139,7 +139,7 @@ const MyOrdersScreen: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       const newOrderNumber = `ORD-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-      const response = await fetch(`http://${window.location.hostname}:8080/api/orders/${selectedOrder.id}`, {
+      const response = await fetch(`/api/orders/${selectedOrder.id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

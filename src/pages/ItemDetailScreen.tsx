@@ -23,7 +23,7 @@ const ItemDetailScreen: React.FC = () => {
       const fetchItem = async () => {
         setIsFetching(true);
         try {
-          const response = await fetch(`http://${window.location.hostname}:8080/api/products/${itemId}`);
+          const response = await fetch(`/api/products/${itemId}`);
           if (response.ok) {
             const data = await response.json();
             
