@@ -316,7 +316,7 @@
 /* Feedback Snackbar */
 .feedback-snackbar {
   position: fixed;
-  bottom: 80px; /* Above bottom nav */
+  bottom: 160px; /* Above CartTab and bottom nav */
   left: 16px;
   right: 16px;
   background: var(--surface);

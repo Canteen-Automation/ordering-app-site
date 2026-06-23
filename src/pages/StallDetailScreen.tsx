@@ -1,4 +1,3 @@
-﻿import { apiFetch } from '../api';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Info } from 'lucide-react';
@@ -19,7 +18,7 @@ const StallDetailScreen: React.FC = () => {
     const fetchStallDetails = async () => {
       setLoading(true);
       try {
-        const response = await apiFetch(`http://${window.location.hostname}:8080/api/stalls/${id}`);
+        const response = await fetch(`http://${window.location.hostname}:8080/api/stalls/${id}`);
         if (!response.ok) throw new Error('Stall not found');
         const data = await response.json();
         
@@ -72,9 +71,9 @@ const StallDetailScreen: React.FC = () => {
           if (!prevStall) return prevStall;
           return {
             ...prevStall,
-            products: prevStall.products.map(p => 
+            products: prevStall.products ? prevStall.products.map(p => 
               p.id === update.productId.toString() ? { ...p, stock: update.stock } : p
-            )
+            ) : []
           };
         });
       } catch (err) {

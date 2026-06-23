@@ -1,4 +1,3 @@
-import { apiFetch } from '../api';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { FoodItem, Category, Stall } from '../types';
 
@@ -8,7 +7,7 @@ interface FoodContextType {
   stalls: Stall[];
   isLoading: boolean;
   error: string | null;
-  refreshData: () => Promise<void>;
+  refreshData: (silent?: boolean) => Promise<void>;
 }
 
 const FoodContext = createContext<FoodContextType | undefined>(undefined);
@@ -30,9 +29,9 @@ export const FoodProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     try {
       const [baseItemsRes, productsRes, stallsRes] = await Promise.all([
-        apiFetch(`${API_BASE_URL}/base-items?size=100`, { cache: 'no-store' }),
-        apiFetch(`${API_BASE_URL}/products?size=100`, { cache: 'no-store' }),
-        apiFetch(`${API_BASE_URL}/stalls/active`, { cache: 'no-store' })
+        fetch(`${API_BASE_URL}/base-items?size=100`, { cache: 'no-store' }),
+        fetch(`${API_BASE_URL}/products?size=100`, { cache: 'no-store' }),
+        fetch(`${API_BASE_URL}/stalls/active`, { cache: 'no-store' })
       ]);
 
       if (!baseItemsRes.ok || !productsRes.ok || !stallsRes.ok) {

@@ -1,4 +1,3 @@
-﻿import { apiFetch } from '../api';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, RefreshCcw, X, Star, ChevronRight } from 'lucide-react';
@@ -36,7 +35,12 @@ const HomeScreen: React.FC = () => {
     if (sessionStorage.getItem('feedback_dismissed')) return;
 
     try {
-      const response = await apiFetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/latest-unrated/${user?.id}`, {
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
       if (response.status === 200) {
         const order = await response.json();
         console.log('Unrated order found:', order);
@@ -54,8 +58,12 @@ const HomeScreen: React.FC = () => {
     if (!unratedOrder) return;
     
     try {
-      await apiFetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
-        method: 'POST'
+      const token = localStorage.getItem('token');
+      await fetch(`http://${window.location.hostname}:8080/api/feedback/skip/${unratedOrder.id}`, {
+        method: 'POST',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
       });
       setShowFeedbackModal(false);
       setShowFeedbackSnackbar(false);
@@ -71,9 +79,13 @@ const HomeScreen: React.FC = () => {
 
   const handleFeedbackSubmit = async (feedbackData: any) => {
     try {
-      const response = await apiFetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://${window.location.hostname}:8080/api/feedback/submit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
         body: JSON.stringify(feedbackData)
       });
       
@@ -113,7 +125,7 @@ const HomeScreen: React.FC = () => {
       <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}>
         <h2 style={{ marginBottom: 12 }}>Oops! Something went wrong</h2>
         <p style={{ color: 'var(--text-mid)', marginBottom: 24 }}>{error}</p>
-        <button className="primary-button" onClick={refreshData} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <button className="primary-button" onClick={() => refreshData()} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <RefreshCcw size={18} /> Try Again
         </button>
       </div>
