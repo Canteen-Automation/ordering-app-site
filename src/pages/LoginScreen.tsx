@@ -92,6 +92,7 @@ const LoginScreen: React.FC = () => {
         <div className="login-card animate-slideUp">
           <div className="login-header-logo">
             <img src={ritLogo} alt="RIT Logo" className="rit-logo" />
+            <div className="tillo-catchphrase">till yo stomach's full</div>
           </div>
 
           <div className="login-header">
